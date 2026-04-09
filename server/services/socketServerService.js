@@ -1,4 +1,5 @@
 import { Server } from 'socket.io';
+import { joinRoom } from '../controllers/roomConnectionSocket.js';
 
 
 export const createSocketServer = (server) => {
@@ -10,8 +11,9 @@ export const createSocketServer = (server) => {
   });    
   
   io.on('connection', (socket) => {
-        console.log('a user connected');
-      
+      console.log('a user connected');
+      chatSocket(socket);
+      joinRoom(socket,io);
     });
 
 server.listen(3000, () => {
