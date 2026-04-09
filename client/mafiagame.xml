@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mafiaGame>
+  <gameConfig>
+    <name>Mafia Game</name>
+    <description>A classic social deduction game</description>
+    <minPlayers>4</minPlayers>
+    <maxPlayers>12</maxPlayers>
+    <dayTimeLimit>300</dayTimeLimit> <!-- seconds -->
+    <nightTimeLimit>60</nightTimeLimit> <!-- seconds -->
+  </gameConfig>
+
+  <roles>
+    <role id="mafia" name="Mafia" team="mafia" count="1-3">
+      <description>Eliminate all villagers</description>
+      <abilities>
+        <ability name="kill" phase="night" />
+      </abilities>
+    </role>
+
+    <role id="detective" name="Detective" team="village" count="1">
+      <description>Investigate players to find mafia</description>
+      <abilities>
+        <ability name="investigate" phase="night" />
+      </abilities>
+    </role>
+
+    <role id="doctor" name="Doctor" team="village" count="1">
+      <description>Protect players from mafia attacks</description>
+      <abilities>
+        <ability name="heal" phase="night" />
+      </abilities>
+    </role>
+
+    <role id="villager" name="Villager" team="village" count="remaining">
+      <description>Find and eliminate the mafia</description>
+    </role>
+  </roles>
+
+  <phases>
+    <phase name="day" order="1">
+      <actions>
+        <action name="vote" type="majority" />
+        <action name="discuss" />
+      </actions>
+    </phase>
+
+    <phase name="night" order="2">
+      <actions>
+        <action name="mafia_kill" />
+        <action name="detective_investigate" />
+        <action name="doctor_heal" />
+      </actions>
+    </phase>
+  </phases>
+
+  <winConditions>
+    <condition team="village">All mafia eliminated</condition>
+    <condition team="mafia">Mafia outnumber villagers</condition>
+  </winConditions>
+</mafiaGame>
