@@ -4,7 +4,7 @@ import { Server } from 'socket.io';
 export const createSocketServer = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: ["http://localhost:5173","https://refactored-engine-67447vx7pq5cr567-5173.app.github.dev/"  ],
+      origin: ["http://localhost:5173","http://refactored-engine-67447vx7pq5cr567-5173.app.github.dev/"  ],
       methods: ["GET", "POST"]
     }
   });    
