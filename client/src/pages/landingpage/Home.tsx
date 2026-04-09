@@ -1,12 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage, } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, RefreshCcw } from "lucide-react";
-import {
-    InputOTP,
-    InputOTPGroup,
-    InputOTPSlot,
-} from "@/components/ui/input-otp"
+import { RefreshCcw } from "lucide-react";
+
+import CreateGameButton from "./CreateGameButton";
+import JoinGameButton from "./JoinGameButton";
 
 export const Home = () => {
     return (
@@ -36,45 +34,12 @@ export const Home = () => {
                     </div>
 
                     {/* Create Game Button - centered */}
-                    <div className="flex flex-col justify-center items-center gap-1 bg-gray-50 p-8 rounded-2xl">
-                        <Button
-                            size="icon-lg"
-                            variant="outline"
-                            className="rounded-full disabled:opacity-100"
-                            aria-label="Create Game"
-                            disabled
-                        >
-                            <Plus />
-                        </Button>
-                        <h3 className="text-sm font-bold">Host Your Game</h3>
-                        <p className="text-sm">Create a new game and invite your friends to play.</p>
-                        <Button variant="outline" size="lg">
-                            Create Game
-                        </Button>
-                    </div>
+                    <CreateGameButton/>
                 </div>
 
                 {/* RIGHT SIDE - fixed width, vertical layout */}
                 <div className="w-80 bg-gray-50 p-8">
-                    <div className="space-y-2">
-                        <h3 className="text-left text-sm font-bold">Join a Game</h3>
-                        <p className="text-left text-sm">Enter the game code provided by your host.</p>
-                        <InputOTP maxLength={8} className="mb-4">
-                            <InputOTPGroup>
-                                <InputOTPSlot index={0} />
-                                <InputOTPSlot index={1} />
-                                <InputOTPSlot index={2} />
-                                <InputOTPSlot index={3} />
-                                <InputOTPSlot index={4} />
-                                <InputOTPSlot index={5} />
-                                <InputOTPSlot index={6} />
-                                <InputOTPSlot index={7} />
-                            </InputOTPGroup>
-                        </InputOTP>
-                        <Button variant="outline" size="lg" className="w-full">
-                            Join Game
-                        </Button>
-                    </div>
+                   <JoinGameButton/>
                 </div>
             </div>
 
