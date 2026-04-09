@@ -6,6 +6,10 @@ import {
 } from "@/components/ui/input-otp"
 
 export const JoinGameButton = () => {
+
+    const joinRoom = () => {
+        
+    }
     return (
          <div className="space-y-2">
                         <h3 className="text-left text-sm font-bold">Join a Game</h3>

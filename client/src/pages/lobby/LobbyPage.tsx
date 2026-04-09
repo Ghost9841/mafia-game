@@ -1,6 +1,18 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { socket } from "@/services/server";
+import { useState } from "react";
 
 export const LobbyPage = () => {
+    const [msg,setMsg] = useState("");
+    const [servermsg,setServerMsg] = useState("");
+
+    const sendMessage = () => {
+        socket.emit("send_message", {
+            message: msg,
+            room: "123"
+        })
+    }
+
     return (
         <div className="mx-8">
             <h1 className="text-4xl font-bold mb-8 text-center">Mafia Game Lobby</h1>
@@ -19,6 +31,7 @@ export const LobbyPage = () => {
                     </div>
                 </div>
             </div>
+
         </div>
     )
 }

@@ -1,6 +1,29 @@
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { socket } from "@/services/server";
 export const CreateGameButton = () => {
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const createGame = () => {
+        setLoading(true);
+
+        socket.emit("create_room", {
+            hostName: "Agent Aakash", // later dynamic
+            avatar: "default.png"
+        });
+
+        socket.on("room_created", (room) => {
+            console.log(room);
+
+            // Save room locally (important)
+            localStorage.setItem("roomCode", room.roomCode);
+
+            navigate(`/lobby/${room.roomCode}`);
+        });
+    };
     return (
            <div className="flex flex-col justify-center items-center gap-1 bg-gray-50 p-8 rounded-2xl">
                         <Button
@@ -14,8 +37,8 @@ export const CreateGameButton = () => {
                         </Button>
                         <h3 className="text-sm font-bold">Host Your Game</h3>
                         <p className="text-sm">Create a new game and invite your friends to play.</p>
-                        <Button variant="outline" size="lg">
-                            Create Game
+                        <Button variant="outline" size="lg" onClick={createGame}>
+                              {loading ? "Creating..." : "Create Game"}
                         </Button>
                     </div>
     )
