@@ -117,15 +117,6 @@
   }
 }
 
-#root {
-  width: 1280px;
-  max-width: 100%;
-  min-height: 100svh;
-}
-
-body {
-  margin: 0;
-}
 
 @theme inline {
   --font-heading: var(--font-sans);
