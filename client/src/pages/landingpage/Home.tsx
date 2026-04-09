@@ -1,11 +1,10 @@
-import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarImage, } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage, } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, RefreshCcw } from "lucide-react";
 import {
     InputOTP,
     InputOTPGroup,
-    InputOTPSeparator,
     InputOTPSlot,
 } from "@/components/ui/input-otp"
 
