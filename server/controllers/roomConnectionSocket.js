@@ -18,7 +18,7 @@ export const joinRoom = (socket, io) => {
         {
           socketId: socket.id,
           name: data.hostName,
-          avatar: data.avatar,
+          avatar: data.avatarUrl,
           alive: true,
           role: null
         }
