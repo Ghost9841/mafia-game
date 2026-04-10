@@ -12,6 +12,7 @@ import {
 import CreateGameButton from "./CreateGameButton";
 import JoinGameButton from "./JoinGameButton";
 import { useState } from "react";
+import HowToPlay from "./HowToPlay";
 
 export const Home = () => {
   const [userName, setUserName] = useState("");
@@ -89,6 +90,7 @@ export const Home = () => {
         {/* RIGHT SIDE - fixed width, vertical layout */}
         <div className="w-80 bg-gray-50 p-8">
           <JoinGameButton />
+          <HowToPlay/>
         </div>
       </div>
     </div>
