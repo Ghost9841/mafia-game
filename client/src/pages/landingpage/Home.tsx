@@ -6,43 +6,25 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 import CreateGameButton from "./CreateGameButton";
 import JoinGameButton from "./JoinGameButton";
-import { useEffect, useState } from "react";
-import { socket } from "@/services/server";
+import { useState } from "react";
 
 export const Home = () => {
   const [userName, setUserName] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("https://github.com/shadcn.png");
-  const [openDropdown,setOpenDropdown] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(false);
 
-  const handleAvatarChange = (e:any) => {
+  const handleAvatarChange = (e: any) => {
     setAvatarUrl(e.target.value);
   };
 
   const onSaveClick = () => {
     setOpenDropdown(false);
   }
-  // Connect socket when user enters name
-useEffect(() => {
-  if (userName.trim()) {
-    socket.connect();
-    
-    socket.on("connect", () => {
-      setIsConnected(true);
-      console.log("Connected:", socket.id);
-    });
-  }
-  
-  return () => {
-    socket.off("connect");
-  };
-}, [userName]);
 
   return (
     <div className="mx-8">
@@ -53,31 +35,35 @@ useEffect(() => {
           {/* Avatar Section */}
           <div className="flex items-center gap-8 p-6 bg-gray-50 rounded-lg mb-8">
             <DropdownMenu open={openDropdown} onOpenChange={(open) => setOpenDropdown(open)}>
-                <DropdownMenuTrigger>
-              <Avatar className="size-24">
-                <AvatarImage src={avatarUrl} />
-                <AvatarFallback>CN</AvatarFallback>
-                  <Button className="absolute -bottom-1 -right-1 w-9 h-9 bg-black rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all ring-2 ring-gray-200">
+              <DropdownMenuTrigger>
+                <div className="relative cursor-pointer">
+                  <Avatar className="size-24">
+                    <AvatarImage src={avatarUrl} />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+
+                  {/* Replace Button with div */}
+                  <div className="absolute -bottom-1 -right-1 w-9 h-9 bg-black rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all ring-2 ring-gray-200 cursor-pointer">
                     <EditIcon className="w-5 h-5 text-white" />
-                  </Button>
-              </Avatar>
-                </DropdownMenuTrigger>
+                  </div>
+                </div>
+              </DropdownMenuTrigger>
               <DropdownMenuContent className="w-90">
                 <DropdownMenuGroup>
                   <h3 className="text-lg font-bold mb-2 ml-2">Edit Avatar Url</h3>
-                    <Input
-                      type="text"
-                      value={avatarUrl}
-                      onChange={handleAvatarChange}
-                      placeholder="Enter your Avatar URL"
-                      className="text-2xl mb-2"
-                    />
-                    <Button
-                      onClick={onSaveClick}
-                      className="w-full text-center bg-blue-500 text-white"
-                    >
-                      Save
-                    </Button>
+                  <Input
+                    type="text"
+                    value={avatarUrl}
+                    onChange={handleAvatarChange}
+                    placeholder="Enter your Avatar URL"
+                    className="text-2xl mb-2"
+                  />
+                  <Button
+                    onClick={onSaveClick}
+                    className="w-full text-center bg-blue-500 text-white"
+                  >
+                    Save
+                  </Button>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -93,9 +79,11 @@ useEffect(() => {
               />
             </div>
           </div>
-
           {/* Create Game Button - centered */}
-          <CreateGameButton />
+          <CreateGameButton
+          username={userName}
+          avatarUrl={avatarUrl}
+           />
         </div>
 
         {/* RIGHT SIDE - fixed width, vertical layout */}

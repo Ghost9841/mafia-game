@@ -3,16 +3,18 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { socket } from "@/services/server";
-export const CreateGameButton = () => {
+
+export const CreateGameButton = ({username,avatarUrl}: {username: string, avatarUrl: string}) => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const createGame = () => {
+        socket.connect();
         setLoading(true);
 
         socket.emit("create_room", {
-            hostName: "Agent Aakash", // later dynamic
-            avatar: "default.png"
+            hostName: username,
+            avatar: avatarUrl || "https://github.com/shadcn.png",
         });
 
         socket.on("room_created", (room) => {
