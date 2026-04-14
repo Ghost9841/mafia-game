@@ -3,9 +3,11 @@ import CreditsPage from './pages/credits/CreditsPage';
 import TermsPage from './pages/terms/TermsPage';
 import { Home } from './pages/landingpage/Home';
 import LobbyPage from './pages/lobby/LobbyPage';
+import { Toaster } from './components/ui/sonner';
 
 export const App=()=>{
   return (
+    <>
     <Router>
       <Routes>
         <Route path="/" element={<Home/>} />
@@ -17,6 +19,8 @@ export const App=()=>{
 
       </Routes>
     </Router>
+        <Toaster position='top-right' richColors/>
+    </>
   )
 }
 

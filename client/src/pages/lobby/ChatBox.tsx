@@ -12,7 +12,14 @@ type Message = {
 };
 
 export const ChatBox = ({ username }: { username: string }) => {
-    const [msg, setMsg] = useState<Message[]>([]);
+    const [msg, setMsg] = useState<Message[]>([
+        {
+            id: "system-1",
+            username: "System",
+            text: "Welcome to the chat!",
+            timestamp: new Date(),
+        }
+    ]);
     const [newMessage, setNewMessage] = useState("");
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
