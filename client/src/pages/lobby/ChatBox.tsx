@@ -11,7 +11,7 @@ type Message = {
     timestamp: Date;
 };
 
-export const ChatBox = () => {
+export const ChatBox = ({ username }: { username: string }) => {
     const [msg, setMsg] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState("");
 
@@ -22,7 +22,7 @@ export const ChatBox = () => {
 
         const message: Message = {
             id: socket.id,
-            username: "You",
+            username: username,
             text: newMessage,
             timestamp: new Date(),
         };

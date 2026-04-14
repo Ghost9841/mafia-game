@@ -3,8 +3,11 @@ import { NumofPlayers } from "./NumofPlayers";
 import { ArrowLeft, Music } from "lucide-react";
 import PresetCustomSettings from "./PresetsCustomSettings";
 import { ChatBox } from "./ChatBox";
+import { useLocation } from "react-router-dom";
 
 export const LobbyPage = () => {
+  const location = useLocation();
+const { username, avatarUrl } = location.state || {};
   return (
     <div className="flex-1 relative flex overflow-hidden min-h-screen">
       <div className="max-w-7xl mx-auto w-full p-4">
@@ -41,7 +44,7 @@ export const LobbyPage = () => {
 
             {/* Box 3 */}
             <div className="flex-1 ">
-              <ChatBox/>
+              <ChatBox username={username}/>
             </div>
           </div>
         </div>
