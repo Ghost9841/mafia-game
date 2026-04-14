@@ -89,7 +89,10 @@ export const Home = () => {
 
         {/* RIGHT SIDE - fixed width, vertical layout */}
         <div className="w-80 bg-gray-50 p-8">
-          <JoinGameButton />
+          <JoinGameButton
+            username={userName}
+            avatarUrl={avatarUrl}
+          />
           <HowToPlay/>
         </div>
       </div>

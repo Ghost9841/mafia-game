@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { socket } from "@/services/server";
 import { Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -40,7 +41,15 @@ export const ChatBox = () => {
             sendMessage();
         }
     };
-
+    socket.on("receive_message", (data) => {
+        const message: Message = {
+            id: Date.now(),
+            username: data.username,
+            text: data.text,
+            timestamp: new Date(data.timestamp),
+        };
+        setMsg((prev) => [...prev, message]);
+    });
     return (
         <div className="flex-1 border border-gray-200 rounded-lg p-4 flex flex-col h-full">
             <h2 className="text-lg font-bold mb-2">Chat Box</h2>
