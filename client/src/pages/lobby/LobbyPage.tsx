@@ -18,9 +18,9 @@ import { toast } from "sonner";
 
 export const LobbyPage = () => {
   const location = useLocation();
-  const { username,room } = location.state || {};
+  const { username, room } = location.state || {};
   const [players, setPlayers] = useState(room?.players || []);
-
+  const isHost = room.host === socket.id;
   const [code] = useState(room?.roomId || []);
   const handleCopyCodeToClipBoard = () => {
     navigator.clipboard.writeText(code);
@@ -55,16 +55,16 @@ export const LobbyPage = () => {
             <div className="flex justify-end gap-4">
               <InputOTP maxLength={8} className="mb-4 hover:cursor-pointer" value={code} onClick={handleCopyCodeToClipBoard}>
                 <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                    <InputOTPSlot index={6} />
-                    <InputOTPSlot index={7} />
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                  <InputOTPSlot index={6} />
+                  <InputOTPSlot index={7} />
                 </InputOTPGroup>
-            </InputOTP>
+              </InputOTP>
               <Button variant="outline" className="mr-2">
                 <Music className="w-4 h-4 mr-1" />
               </Button>
@@ -74,12 +74,12 @@ export const LobbyPage = () => {
           <div className="flex gap-6">
             {/* Box 1 */}
             <div className="w-80 border border-gray-200 rounded-lg p-4">
-              <NumofPlayers players={players} />      
+              <NumofPlayers players={players} />
             </div>
 
             {/* Box 2 */}
             <div className="flex-1 border border-gray-200 rounded-lg p-4">
-              <PresetCustomSettings />
+              <PresetCustomSettings isHost={isHost} />
             </div>
 
             {/* Box 3 */}
@@ -87,6 +87,15 @@ export const LobbyPage = () => {
               <ChatBox username={username} />
             </div>
           </div>
+          {isHost ? (
+            <Button className="text-center mt-6">
+              Start Game
+              </Button>
+          ): (
+            <div className="text-center mt-6 text-gray-500">
+             <span className="inline-block animate-spin">⟳</span> Waiting for host to start the game...
+            </div>
+          )}
         </div>
       </div>
     </div>
