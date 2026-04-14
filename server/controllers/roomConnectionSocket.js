@@ -38,7 +38,7 @@ export const joinRoom = (socket, io) => {
 
 
   // 🔹 Join Room
-  socket.on("join_room", ({ roomCode, name, avatar }) => {
+  socket.on("join_room", ({ roomCode, playerName, avatarUrl }) => {
     const room = rooms[roomCode];
 
     if (!room) {
@@ -47,15 +47,15 @@ export const joinRoom = (socket, io) => {
 
     room.players.push({
       socketId: socket.id,
-      name,
-      avatar,
+      playerName,
+      avatar: avatarUrl || "https://github.com/shadcn.png",
       alive: true,
       role: null
     });
 
     socket.join(roomCode);
 
-    io.to(roomCode).emit("room_updated", room);
+    io.to(roomCode).emit("room_joined", room);
 
     console.log(`${socket.id} joined ${roomCode}`);
   });
