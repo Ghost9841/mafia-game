@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { NumofPlayers } from "./NumofPlayers";
-import { ArrowLeft, Music, Speaker } from "lucide-react";
+import { ArrowLeft, Music } from "lucide-react";
 import PresetCustomSettings from "./PresetsCustomSettings";
+import { ChatBox } from "./ChatBox";
 
 export const LobbyPage = () => {
   return (
@@ -11,7 +12,7 @@ export const LobbyPage = () => {
         <div className="border border-gray-200 rounded-lg p-6">
           <div className="grid grid-cols-3 items-center mb-6">
             <div className="flex justify-start">
-              <Button>
+              <Button onClick={()=> navigation.navigate("/")}>
                 <ArrowLeft className="w-4 h-4 mr-1" /> Back
               </Button>
             </div>
@@ -39,9 +40,8 @@ export const LobbyPage = () => {
             </div>
 
             {/* Box 3 */}
-            <div className="flex-1 border border-gray-200 rounded-lg p-4">
-              <h2 className="text-lg font-bold mb-2">Box 3</h2>
-              <p className="text-gray-600">This is the third box.</p>
+            <div className="flex-1 ">
+              <ChatBox/>
             </div>
           </div>
         </div>
