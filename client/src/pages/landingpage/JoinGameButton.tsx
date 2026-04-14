@@ -25,7 +25,6 @@ export const JoinGameButton = ({ username, avatarUrl }: { username: string, avat
             navigate(`/lobby/${room.roomCode}`, {
                 state: {
                     username,
-                    avatarUrl,
                     room
                 }
             });
@@ -56,7 +55,7 @@ export const JoinGameButton = ({ username, avatarUrl }: { username: string, avat
                 variant="outline"
                 size="lg"
                 className="w-full">
-                Join Game
+              {loading ? "Joining..." : "Join Game"}
             </Button>
         </div>
     )

@@ -14,7 +14,7 @@ export const CreateGameButton = ({ username, avatarUrl }: { username: string, av
 
         socket.emit("create_room", {
             playerName: username,
-            avatar: avatarUrl || "https://github.com/shadcn.png",
+            avatarUrl: avatarUrl || "https://github.com/shadcn.png",
             host: true,
         });
 
@@ -25,7 +25,6 @@ export const CreateGameButton = ({ username, avatarUrl }: { username: string, av
             navigate(`/lobby/${room.roomCode}`, {
                 state: {
                     username,
-                    avatarUrl,
                     room
                 }
             });

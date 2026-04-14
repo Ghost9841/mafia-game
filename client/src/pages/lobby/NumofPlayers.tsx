@@ -1,3 +1,4 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Users, Crown } from 'lucide-react';
 
 type Player = {
@@ -33,28 +34,26 @@ export default NumofPlayers;
 export const PlayerSlots = ({ players = [] }: { players: Player[] }) => {
   return (
     <div className="space-y-2 max-h-[400px] overflow-y-auto pr-1">
-      {players.map((player, idx) => (
+      {players.map((player) => (
         <div
           key={player.socketId}
-          className={`flex items-center gap-3 p-2 rounded-md border ${
-            player.host
-              ? 'border-gray-300 bg-gray-50'
-              : 'border-gray-200 bg-white'
-          }`}
+          className={`flex items-center gap-3 p-2 rounded-md border ${player.host
+            ? 'border-gray-300 bg-gray-50'
+            : 'border-gray-200 bg-white'
+            }`}
         >
           {/* Avatar */}
-          <div
-            className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-              player.host
-                ? 'bg-gray-800 text-white'
-                : 'bg-gray-100 text-gray-600'
-            }`}
-          >
-            {player.host ? (
-              <Crown className="w-4 h-4" />
-            ) : (
-              player.name?.[0]?.toUpperCase()
-            )}
+          <div className="w-8 h-8">
+            <Avatar className="w-8 h-8">
+              <AvatarImage src={player.avatar} />
+              <AvatarFallback className="flex items-center justify-center bg-gray-100 text-gray-600 text-sm font-medium">
+                {player.host ? (
+                  <Crown className="w-4 h-4" />
+                ) : (
+                  player.name?.[0]?.toUpperCase()
+                )}
+              </AvatarFallback>
+            </Avatar>
           </div>
 
           {/* Name */}
@@ -71,9 +70,8 @@ export const PlayerSlots = ({ players = [] }: { players: Player[] }) => {
 
           {/* Status */}
           <div
-            className={`w-2 h-2 rounded-full ${
-              player.alive ? 'bg-green-500' : 'bg-gray-300'
-            }`}
+            className={`w-2 h-2 rounded-full ${player.alive ? 'bg-green-500' : 'bg-gray-300'
+              }`}
           />
         </div>
       ))}

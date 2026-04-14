@@ -9,7 +9,7 @@ import { socket } from "@/services/server";
 
 export const LobbyPage = () => {
   const location = useLocation();
-  const { username, avatarUrl,room } = location.state || {};
+  const { username,room } = location.state || {};
     const [players, setPlayers] = useState(room?.players || []);
   useEffect(() => {
     socket.on("room_updated", (updatedRoom) => {
@@ -45,7 +45,7 @@ export const LobbyPage = () => {
           {/* THREE BOXES - side by side */}
           <div className="flex gap-6">
             {/* Box 1 */}
-            <div className="flex-1 border border-gray-200 rounded-lg p-4">
+            <div className="w-80 border border-gray-200 rounded-lg p-4">
               <NumofPlayers players={players} />      
             </div>
 
@@ -55,7 +55,7 @@ export const LobbyPage = () => {
             </div>
 
             {/* Box 3 */}
-            <div className="flex-1 ">
+            <div className="w-80 ">
               <ChatBox username={username} />
             </div>
           </div>
