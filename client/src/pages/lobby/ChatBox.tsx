@@ -43,10 +43,22 @@ export const ChatBox = ({ username }: { username: string }) => {
                 },
             ]);
         })
+        socket.on("roomMaAayo", (data) => {
+            setMsg((prev) => [
+                ...prev,
+                {
+                    id: "system-",
+                    username: "System",
+                    text: data.message,
+                    timestamp: new Date(),
+                },
+            ]);
+        });
         return () => {
             socket.off("receive_message");
+            socket.off("roomMaAayo");
         };
-    }, [msg]);
+    }, []);
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -62,11 +74,19 @@ export const ChatBox = ({ username }: { username: string }) => {
             <div className="flex-1 overflow-y-auto mb-3 space-y-2 pr-2">
                 {msg.map((msg) => (
                     <div key={msg.id} className="text-sm">
-                        <span className="font-semibold text-gray-700">{msg.username}:</span>{' '}
-                        <span className="text-gray-600">{msg.text}</span>
-                        <span className="text-xs text-gray-400 ml-2">
-                            {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </span>
+                        {msg.username === "System" ? (
+                            <div className="text-center text-gray-400 italic">
+                                {msg.text}
+                            </div>
+                        ) : (
+                            <>
+                                <span className="font-semibold text-gray-700">{msg.username}:</span>{' '}
+                                <span className="text-gray-600">{msg.text}</span>
+                                <span className="text-xs text-gray-400 ml-2">
+                                    {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                            </>
+                        )}
                     </div>
                 ))}
                 <div ref={messagesEndRef} />

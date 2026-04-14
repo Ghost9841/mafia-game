@@ -13,20 +13,20 @@ export const CreateGameButton = ({ username, avatarUrl }: { username: string, av
         setLoading(true);
 
         socket.emit("create_room", {
-            hostName: username,
+            playerName: username,
             avatar: avatarUrl || "https://github.com/shadcn.png",
+            host: true,
         });
 
         socket.on("room_created", (room) => {
-            console.log(room);
-
             // Save room locally (important)
             localStorage.setItem("roomCode", room.roomCode);
 
             navigate(`/lobby/${room.roomCode}`, {
                 state: {
                     username,
-                    avatarUrl
+                    avatarUrl,
+                    room
                 }
             });
         });

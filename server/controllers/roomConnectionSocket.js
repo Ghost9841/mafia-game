@@ -17,9 +17,10 @@ export const joinRoom = (socket, io) => {
       players: [
         {
           socketId: socket.id,
-          name: data.hostName,
+          name: data.playerName,
           avatar: data.avatarUrl,
           alive: true,
+          host: true,
           role: null
         }
       ],
@@ -32,8 +33,8 @@ export const joinRoom = (socket, io) => {
     socket.join(roomCode);
 
     socket.emit("room_created", newRoom);
-
     console.log("Room created:", roomCode);
+    io.to(roomCode).emit("room_updated", newRoom);
   });
 
 
@@ -47,15 +48,22 @@ export const joinRoom = (socket, io) => {
 
     room.players.push({
       socketId: socket.id,
-      playerName,
+      name: playerName,
       avatar: avatarUrl || "https://github.com/shadcn.png",
       alive: true,
+      host: false,
       role: null
     });
 
     socket.join(roomCode);
 
     io.to(roomCode).emit("room_joined", room);
+
+    io.to(roomCode).emit("roomMaAayo", {
+      message: `${playerName} has joined the room`
+    });
+    
+     io.to(roomCode).emit("room_updated", room);
 
     console.log(`${socket.id} joined ${roomCode}`);
   });

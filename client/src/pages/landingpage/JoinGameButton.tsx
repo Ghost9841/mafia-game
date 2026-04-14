@@ -20,13 +20,13 @@ export const JoinGameButton = ({ username, avatarUrl }: { username: string, avat
             playerName: username,
             avatarUrl: avatarUrl || "https://github.com/shadcn.png",
         })
-        socket.on("room_joined", (room) => {
-            console.log(room);
+        socket.on("room_updated", (room) => {
             localStorage.setItem("roomCode", room.roomCode);
             navigate(`/lobby/${room.roomCode}`, {
                 state: {
                     username,
-                    avatarUrl
+                    avatarUrl,
+                    room
                 }
             });
         });
