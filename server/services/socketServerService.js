@@ -15,6 +15,7 @@ export const createSocketServer = (server) => {
       console.log('a user connected');
       chatSocket(socket);
       joinRoom(socket,io);
+      startGame(socket,io);
     });
 
 server.listen(3000,"0.0.0.0", () => {

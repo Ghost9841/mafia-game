@@ -1,4 +1,4 @@
-const rooms = {}; // store all rooms (temporary memory DB)
+export const rooms = {}; // store all rooms (temporary memory DB)
 
 function generateRoomCode() {
   return Math.random().toString(36).substring(2, 10).toUpperCase();
@@ -25,6 +25,7 @@ export const joinRoom = (socket, io) => {
         }
       ],
       gameState: "lobby",
+      gameData: null,
       createdAt: Date.now()
     };
 
@@ -75,3 +76,4 @@ export const joinRoom = (socket, io) => {
     // (optional) remove player from rooms
   });
 };
+
