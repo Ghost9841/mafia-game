@@ -9,6 +9,7 @@ import VotingPhase from "./phases/VotingPhase";
 export const GamePage = () => {
   const { state } = useLocation();
   const { room } = state || {};
+  
 
   const [phase, setPhase] = useState("role");
 
@@ -18,10 +19,12 @@ export const GamePage = () => {
 
   return (
     <div>
-      {phase === "role" && <RoleReveal />}
+      {phase === "role" && <RoleReveal role="Mafia" />}
       {phase === "night" && <NightPhase />}
       {phase === "day" && <DayPhase />}
       {phase === "voting" && <VotingPhase />}
     </div>
   );
 };
+
+export default GamePage;

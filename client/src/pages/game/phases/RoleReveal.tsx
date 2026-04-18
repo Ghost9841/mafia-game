@@ -1,15 +1,46 @@
-export const RoleReveal = () => {
+import { useEffect, useState } from "react";
+
+import backCard from "@/assets/cards/back_mafia.png";
+import mafiaImg from "@/assets/cards/mafia.png";
+import doctorImg from "@/assets/cards/Doctor.png";
+import detectiveImg from "@/assets/cards/detective.png";
+import villagerImg from "@/assets/cards/Citizen.png";
+
+const roleImages: Record<string, string> = {
+  Mafia: mafiaImg,
+  Doctor: doctorImg,
+  Detective: detectiveImg,
+  Villager: villagerImg,
+};
+
+export const RoleReveal = ({ role }: { role: string }) => {
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setRevealed(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+  const handleReveal = () => {
+    setRevealed(true);
+  };
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-4xl">
-        <h1 className="text-3xl font-bold mb-6 text-center">Role Reveal</h1>
-        <p className="text-gray-700 mb-4 text-center">
-          Your role is: <span className="font-bold text-blue-500">Villager</span>
-        </p>
-        {/* Placeholder for role details */}
-        <div className="border border-gray-300 rounded-lg p-4 mb-6 h-64 overflow-y-auto">
-          <p className="text-gray-500 text-center mt-20">Role Details Area</p>
-        </div>
+    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+      
+      <div className="text-center">
+        <h2 className="text-white text-xl mb-4 font-bold">
+          {revealed ? `You are ${role}` : "Tap to reveal your role"}
+        </h2>
+
+        <img
+          src={revealed ? roleImages[role] : backCard}
+          alt="card"
+          onClick={handleReveal}
+          className="w-64 h-96 object-cover rounded-xl cursor-pointer transition-transform duration-300 hover:scale-105"
+        />
+
       </div>
     </div>
   );
