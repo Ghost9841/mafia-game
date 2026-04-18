@@ -1,6 +1,7 @@
 import { Server } from 'socket.io';
 import { joinRoom } from '../controllers/roomConnectionSocket.js';
 import { chatSocket } from '../controllers/chatSocket.js';
+import { startGame } from '../controllers/gameStartController.js';
 
 
 export const createSocketServer = (server) => {

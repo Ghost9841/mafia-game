@@ -1,6 +1,6 @@
 import { rooms } from "./roomConnectionSocket.js";
 
-export const startGame = (socket, io) => {
+export function startGame(socket, io) {
     socket.on("start_game", ({ roomCode }) => {
         const room = rooms[roomCode];
 
