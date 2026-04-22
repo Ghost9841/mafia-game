@@ -26,7 +26,16 @@ export const joinRoom = (socket, io) => {
       ],
       gameState: "lobby",
       selectedPresets: null,
-      gameData: null,
+      gameData: {
+        nightActions: {
+          mafiaTarget: null,
+          doctorSave: null,
+          detectiveTarget: null
+        },
+        currentPhase: null,
+        dayCount: 1,
+        revealRoleOnDeath: false
+      }, 
       createdAt: Date.now()
     };
 
@@ -64,8 +73,8 @@ export const joinRoom = (socket, io) => {
     io.to(roomCode).emit("roomMaAayo", {
       message: `${playerName} has joined the room`
     });
-    
-     io.to(roomCode).emit("room_updated", room);
+
+    io.to(roomCode).emit("room_updated", room);
 
     console.log(`${socket.id} joined ${roomCode}`);
   });

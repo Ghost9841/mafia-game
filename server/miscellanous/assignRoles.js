@@ -1,5 +1,7 @@
 
-const roles = ["Mafia", "Detective", "Doctor", "God Father", "Villager"];
+const roles = ["Mafia", "Detective", "Doctor", "GodFather", "Villager"];
+export const mafiaRoles = ["GodFather", "Mafia"];
+export const citizenRoles = ["Doctor", "Detective", "Villager"];
 
 export function assignRoles(players) {
     function shuffleArray(array) {
