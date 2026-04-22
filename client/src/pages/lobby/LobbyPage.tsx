@@ -36,19 +36,19 @@ export const LobbyPage = () => {
   const slashStartGame = () => {
     socket.emit("start_game", { roomCode: room.roomCode });
 
-    socket.emit("slashstartgame");
   };
-
+  
   useEffect(() => {
     socket.on("room_updated", (updatedRoom) => {
       setPlayers(updatedRoom.players);
     });
-
+    
     socket.on("countdown", ({ countdown }) => {
       console.log("Countdown started: ", countdown);
       setIsVisible(true);
       setCountdown(countdown);
     });
+    
     socket.on("game_starting", () => {
         setCountdown(0); // hide countdown
         navigate("/startgame"); // or trigger game screen
