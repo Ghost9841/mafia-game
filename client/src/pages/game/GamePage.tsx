@@ -7,8 +7,8 @@ import DayPhase from "./phases/DayPhase";
 import VotingPhase from "./phases/VotingPhase";
 
 export const GamePage = () => {
-  const { state } = useLocation();
-  const { room } = state || {};
+  const { state} = useLocation();
+  const { username, room , role, players } = state || {};
   
 
   const [phase, setPhase] = useState("role");
@@ -19,7 +19,7 @@ export const GamePage = () => {
 
   return (
     <div>
-      {phase === "role" && <RoleReveal role="Mafia" />}
+      {phase === "role" && <RoleReveal role={role} onComplete={()=> setPhase("night")} />}
       {phase === "night" && <NightPhase />}
       {phase === "day" && <DayPhase />}
       {phase === "voting" && <VotingPhase />}

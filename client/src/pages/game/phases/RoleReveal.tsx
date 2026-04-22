@@ -5,26 +5,29 @@ import mafiaImg from "@/assets/cards/mafia.png";
 import doctorImg from "@/assets/cards/Doctor.png";
 import detectiveImg from "@/assets/cards/detective.png";
 import villagerImg from "@/assets/cards/Citizen.png";
-
+import godfatherImg from "@/assets/cards/GodFather.png";
 const roleImages: Record<string, string> = {
   Mafia: mafiaImg,
   Doctor: doctorImg,
   Detective: detectiveImg,
   Villager: villagerImg,
+  GodFather: godfatherImg,
 };
 
-export const RoleReveal = ({ role }: { role: string }) => {
+export const RoleReveal = ({ role, onComplete }: { role: string; onComplete: () => void }) => {
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setRevealed(true);
+      setTimeout(() => onComplete(), 3000);
     }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
   const handleReveal = () => {
     setRevealed(true);
+    setTimeout(() => onComplete(), 3000); // Short delay to allow user to see the revealed role 
   };
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
