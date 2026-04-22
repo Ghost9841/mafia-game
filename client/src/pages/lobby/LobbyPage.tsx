@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { NumofPlayers } from "./NumofPlayers";
 import PresetCustomSettings from "./PresetsCustomSettings";
 import { ChatBox } from "./ChatBox";
+import CountDownComponent from "./CountDownComponent";
 import { socket } from "@/services/server";
 
 
@@ -13,18 +14,29 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
-import { useLocation } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export const LobbyPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { username, room } = location.state || {};
+
   const [players, setPlayers] = useState(room?.players || []);
-  const isHost = room.host === socket.id;
   const [code] = useState(room?.roomId || []);
+  const isHost = room.host === socket.id;
+  const [countdown, setCountdown] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+
   const handleCopyCodeToClipBoard = () => {
     navigator.clipboard.writeText(code);
     toast.success("Room code copied to clipboard!");
+  };
+
+  const slashStartGame = () => {
+    socket.emit("start_game", { roomCode: room.roomCode });
+
+    socket.emit("slashstartgame");
   };
 
   useEffect(() => {
@@ -32,10 +44,22 @@ export const LobbyPage = () => {
       setPlayers(updatedRoom.players);
     });
 
+    socket.on("countdown", ({ countdown }) => {
+      console.log("Countdown started: ", countdown);
+      setIsVisible(true);
+      setCountdown(countdown);
+    });
+    socket.on("game_starting", () => {
+        setCountdown(0); // hide countdown
+        navigate("/startgame"); // or trigger game screen
+    });
     return () => {
+      socket.off("countdown");
+      socket.off("game_starting");
       socket.off("room_updated");
     };
   }, []);
+
   return (
     <div className="flex-1 relative flex overflow-hidden min-h-screen">
       <div className="max-w-7xl mx-auto w-full p-4">
@@ -43,7 +67,7 @@ export const LobbyPage = () => {
         <div className="border border-gray-200 rounded-lg p-6">
           <div className="grid grid-cols-3 items-center mb-6">
             <div className="flex justify-start">
-              <Button onClick={() => navigation.navigate("/")}>
+              <Button onClick={() => navigate("/")}>
                 <ArrowLeft className="w-4 h-4 mr-1" /> Back
               </Button>
             </div>
@@ -88,13 +112,18 @@ export const LobbyPage = () => {
             </div>
           </div>
           {isHost ? (
-            <Button className="text-center mt-6">
+            <Button 
+            onClick={slashStartGame}
+            className="text-center mt-6">
               Start Game
               </Button>
           ): (
             <div className="text-center mt-6 text-gray-500">
              <span className="inline-block animate-spin">⟳</span> Waiting for host to start the game...
             </div>
+          )}
+          {isVisible && (
+            <CountDownComponent seconds={countdown} />
           )}
         </div>
       </div>
