@@ -38,6 +38,13 @@ export const LobbyPage = () => {
 
   };
   
+  const handlePresentChange = (preset: string) => {
+    socket.emit("select_preset", { 
+      roomCode: room.roomCode, 
+      selectedPresets: preset
+     });
+  }
+  
   useEffect(() => {
     socket.on("room_updated", (updatedRoom) => {
       setPlayers(updatedRoom.players);
@@ -103,7 +110,9 @@ export const LobbyPage = () => {
 
             {/* Box 2 */}
             <div className="flex-1 border border-gray-200 rounded-lg p-4">
-              <PresetCustomSettings isHost={isHost} />
+              <PresetCustomSettings 
+              isHost={isHost}
+              onPresetChange={handlePresentChange} />
             </div>
 
             {/* Box 3 */}

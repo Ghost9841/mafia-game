@@ -13,9 +13,10 @@ type Preset = {
 
 type PresetCustomSettingsProps = {
     isHost: boolean;
+    onPresetChange?: (preset: string) => void;
 };
 
-export const PresetCustomSettings = ({ isHost }: PresetCustomSettingsProps) => {
+export const PresetCustomSettings = ({ isHost , onPresetChange}: PresetCustomSettingsProps) => {
     const [activeTab, setActiveTab] = useState<'presets' | 'custom'>('presets');
     const [hoveredPreset, setHoveredPreset] = useState<string | null>(null);
     const [selectedPresets, setSelectedPresets] = useState<string[]>(['classic']);
@@ -35,25 +36,25 @@ export const PresetCustomSettings = ({ isHost }: PresetCustomSettingsProps) => {
         crazy: {
             name: "Crazy",
             emoji: "🤪",
-            isPremium: false,
+            isPremium: true,
             roles: ["Vigilante", "Mayor", "Framer", "Executioner", "Jester"]
         },
         chaos: {
             name: "Chaos",
             emoji: "🌀",
-            isPremium: false,
+            isPremium: true,
             roles: ["PI", "Spy", "Distractor", "Baiter", "Bomber"]
         },
         corona: {
             name: "Corona",
             emoji: "🦠",
-            isPremium: false,
+            isPremium: true,
             roles: ["Watcher", "Plague Doctor", "Hoarder", "Hacker", "Goose"]
         },
         crimson: {
             name: "Crimson",
             emoji: "❤️",
-            isPremium: false,
+            isPremium: true,
             roles: ["Link", "Mimic", "Alchemist"]
         },
         premium: {
@@ -81,6 +82,7 @@ export const PresetCustomSettings = ({ isHost }: PresetCustomSettingsProps) => {
                 return [...prev, key];
             }
         });
+        onPresetChange?.(key);
     };
 
     return (
