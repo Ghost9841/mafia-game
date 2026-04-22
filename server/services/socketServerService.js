@@ -2,6 +2,7 @@ import { Server } from 'socket.io';
 import { joinRoom } from '../controllers/roomConnectionSocket.js';
 import { chatSocket } from '../controllers/chatSocket.js';
 import { startGame } from '../controllers/gameStartController.js';
+import { selectPresetController } from '../controllers/selectPresetController.js';
 
 
 export const createSocketServer = (server) => {
@@ -16,6 +17,7 @@ export const createSocketServer = (server) => {
       console.log('a user connected');
       chatSocket(socket);
       joinRoom(socket,io);
+      selectPresetController(socket,io);
       startGame(socket,io);
     });
 

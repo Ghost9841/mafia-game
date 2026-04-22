@@ -25,6 +25,7 @@ export const joinRoom = (socket, io) => {
         }
       ],
       gameState: "lobby",
+      selectedPresets: null,
       gameData: null,
       createdAt: Date.now()
     };
