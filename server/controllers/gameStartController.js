@@ -19,10 +19,6 @@ export function startGame(socket, io) {
                 io.to(roomCode).emit("game_starting", { message: "Game is starting!" });
             };
         }, 1000);
-
-        socket.on("slashstartgame", () => {
-            console.log("slashstartgame event received");
-        });
         
         // ✅ Validation
         if (!room) return socket.emit("error", "Room not found");
