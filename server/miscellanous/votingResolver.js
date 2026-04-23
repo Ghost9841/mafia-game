@@ -9,9 +9,17 @@ function resolveVoting(room) {
     
     if (eliminated) {
         const player = room.players.find(p => p.socketId === eliminated);
-        if (player) player.alive = false;
+        if (player) {
+            player.alive = false;
+            return {        // 👈 return eliminated player info
+                name: player.name,
+                avatar: player.avatar,
+                role: room.gameData.revealRoleOnDeath ? player.role : null
+            };
+        }
     }
     
     room.gameData.votes = []; // reset
+    return null; // no one eliminated
 }
 export default resolveVoting;
