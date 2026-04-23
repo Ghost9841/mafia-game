@@ -34,7 +34,8 @@ export const joinRoom = (socket, io) => {
         },
         currentPhase: null,
         dayCount: 1,
-        revealRoleOnDeath: false
+        revealRoleOnDeath: false,
+        votes:[],
       }, 
       createdAt: Date.now()
     };

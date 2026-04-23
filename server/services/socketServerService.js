@@ -3,6 +3,8 @@ import { joinRoom } from '../controllers/roomConnectionSocket.js';
 import { chatSocket } from '../controllers/chatSocket.js';
 import { startGame } from '../controllers/gameStartController.js';
 import { selectPresetController } from '../controllers/selectPresetController.js';
+import nightActionController from '../controllers/nightActionController.js';
+import submitVoteController from '../controllers/submitVoteController.js';
 
 
 export const createSocketServer = (server) => {
@@ -19,6 +21,8 @@ export const createSocketServer = (server) => {
       joinRoom(socket,io);
       selectPresetController(socket,io);
       startGame(socket,io);
+      nightActionController(socket,io);
+      submitVoteController(socket,io);
     });
 
 server.listen(3000,"0.0.0.0", () => {

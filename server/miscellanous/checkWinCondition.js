@@ -10,3 +10,5 @@ export function checkWinCondition(players) {
     if (mafiaCount >= citizenCount) return "mafia";  // mafia outnumbers/equals citizens
     return null;
 }
+
+export default checkWinCondition;

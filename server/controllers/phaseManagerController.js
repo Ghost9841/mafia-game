@@ -1,6 +1,10 @@
+import { mafiaRoles } from "../miscellanous/assignRoles.js";
+import checkWinCondition from "../miscellanous/checkWinCondition.js";
 import { resolveNight } from "../miscellanous/nightActionsResolver.js";
+import resolveVoting from "../miscellanous/votingResolver.js";
 
 export function startPhaseManager(io, roomCode, room) {
+    
     // phase order:
     // night (30s) → day (60s) → voting (30s) → repeat
     function startNight() {
@@ -35,7 +39,7 @@ export function startPhaseManager(io, roomCode, room) {
                     io.to(player.socketId).emit("night_action", {
                         message: "Choose someone to investigate",
                         targets: room.players
-                            .filter(p => p.alive && !mafiaRoles.includes(p.role))
+                            .filter(p => p.alive && p.socketId !== player.socketId)
                             .map(p => ({ socketId: p.socketId, name: p.name, avatar: p.avatar }))
                     });
                 }
@@ -58,6 +62,30 @@ export function startPhaseManager(io, roomCode, room) {
             startVoting();
         }, 60000);
     }
+
+    function startVoting() {
+    room.gameData.currentPhase = "voting";
+    
+    io.to(roomCode).emit("phase_change", { 
+        phase: "voting",
+        targets: room.players
+            .filter(p => p.alive)
+            .map(p => ({ socketId: p.socketId, name: p.name, avatar: p.avatar }))
+    });
+
+    setTimeout(() => {
+        // resolve voting — who got most votes?
+        resolveVoting(room);
+        // check win condition
+        const result = checkWinCondition(room.players);
+        if (result) {
+            io.to(roomCode).emit("game_over", { winner: result });
+        } else {
+            room.gameData.dayCount++;
+            startNight(); // 👈 loop back!
+        }
+    }, 30000);
+}
     
 }
 

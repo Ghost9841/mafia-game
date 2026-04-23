@@ -1,4 +1,5 @@
 import { assignRoles } from "../miscellanous/assignRoles.js";
+import { startPhaseManager } from "./phaseManagerController.js";
 import { rooms } from "./roomConnectionSocket.js";
 
 
@@ -28,9 +29,9 @@ export function startGame(socket, io) {
                         players: room.players.map(p => ({ name: p.name, avatar: p.avatar, alive: p.alive })) 
                     });
                 };
+                startPhaseManager(io, roomCode, room);
             };
         }, 1000);
-        
 
     });
 };
