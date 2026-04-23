@@ -4,7 +4,7 @@ import { resolveNight } from "../miscellanous/nightActionsResolver.js";
 import resolveVoting from "../miscellanous/votingResolver.js";
 
 export function startPhaseManager(io, roomCode, room) {
-    
+
     // phase order:
     // night (30s) → day (60s) → voting (30s) → repeat
     function startNight() {
@@ -64,28 +64,51 @@ export function startPhaseManager(io, roomCode, room) {
     }
 
     function startVoting() {
-    room.gameData.currentPhase = "voting";
-    
-    io.to(roomCode).emit("phase_change", { 
-        phase: "voting",
-        targets: room.players
-            .filter(p => p.alive)
-            .map(p => ({ socketId: p.socketId, name: p.name, avatar: p.avatar }))
-    });
+        room.gameData.currentPhase = "voting";
 
-    setTimeout(() => {
-        // resolve voting — who got most votes?
-        resolveVoting(room);
-        // check win condition
-        const result = checkWinCondition(room.players);
-        if (result) {
-            io.to(roomCode).emit("game_over", { winner: result });
-        } else {
-            room.gameData.dayCount++;
-            startNight(); // 👈 loop back!
-        }
-    }, 30000);
-}
-    
+        io.to(roomCode).emit("phase_change", {
+            phase: "voting",
+            targets: room.players
+                .filter(p => p.alive)
+                .map(p => ({ socketId: p.socketId, name: p.name, avatar: p.avatar }))
+        });
+
+        setTimeout(() => {
+            // resolve voting — who got most votes?
+            resolveVoting(room);
+            // check win condition
+            const result = checkWinCondition(room.players);
+            if (result) {
+                io.to(roomCode).emit("game_over", {
+                    winner: result,
+                    finalPlayers: room.players.map(p => ({
+                        name: p.name,
+                        avatar: p.avatar,
+                        alive: p.alive,
+                        role: p.role  // 👈 reveal everyone's role at end
+                    }))
+                });
+                // reset room for next game
+                room.gameState = "lobby";
+                room.gameData = {
+                    nightActions: { mafiaTarget: null, doctorSave: null, detectiveTarget: null },
+                    currentPhase: null,
+                    dayCount: 1,
+                    revealRoleOnDeath: false,
+                    votes: []
+                };
+                // reset player roles
+                room.players.forEach(p => {
+                    p.role = null;
+                    p.alive = true;
+                });
+                io.to(roomCode).emit("room_updated", room); // send fresh room to everyone
+            } else {
+                room.gameData.dayCount++;
+                startNight(); // 👈 loop back!
+            }
+        }, 30000);
+    }
+
 }
 
