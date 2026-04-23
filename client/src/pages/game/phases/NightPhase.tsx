@@ -31,8 +31,9 @@ export const NightPhase = ({ targets, role }: NightPhaseProps) => {
         socket.on("detective_result", ({ name, isMafia }: DetectiveResult) => {
             setDetectiveResult({ name, isMafia });
         });
+         console.log("NightPhase mounted, targets:", targets);
         return () => { socket.off("detective_result"); };
-    }, []);
+    }, [targets]);
 
     const getMessage = () => {
         if (role === "Mafia" || role === "GodFather") return "Choose someone to eliminate";

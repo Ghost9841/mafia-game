@@ -19,10 +19,12 @@ export const GamePage = () => {
   const [alivePlayers, setAlivePlayers] = useState(players); // track who's alive
   const [winner, setWinner] = useState<string | null>(null);
   const [finalPlayers, setFinalPlayers] = useState([]); // 👈 new state for game ove
+  const [eliminated, setEliminated] = useState(null);
   // r
   useEffect(() => {
-    socket.on("phase_change", ({ phase, nightResult, targets }) => {
-      setPhase(phase);
+    socket.on("phase_change", ({ phase, nightResult, targets, eliminated }) => {
+    setPhase(phase);
+    if (eliminated) setEliminated(eliminated);
       if (nightResult) {
         setNightResult(nightResult);
         // update alive players list
@@ -40,6 +42,7 @@ export const GamePage = () => {
     });
 
     socket.on("night_action", ({ message, targets }) => {
+       console.log("night_action received:", targets); // 👈 add this
       setNightTargets(targets); // your private action targets
     });
 
