@@ -7,6 +7,7 @@ import DayPhase from "./phases/DayPhase";
 import VotingPhase from "./phases/VotingPhase";
 import { socket } from "@/services/server";
 import GameOver from "./phases/GameOver";
+import EveningPhase from "./phases/EveningPhase";
 
 export const GamePage = () => {
   const { state } = useLocation();
@@ -64,6 +65,7 @@ export const GamePage = () => {
       {phase === "night" && <NightPhase targets={nightTargets} role={role} />}
       {phase === "day" && <DayPhase nightResult={nightResult} players={alivePlayers} />}
       {phase === "voting" && <VotingPhase targets={voteTargets} />}
+      {phase === "evening" && <EveningPhase eliminated={eliminated} players={alivePlayers} />}
       {winner && <GameOver winner={winner} players={finalPlayers} />}
 
     </div>

@@ -21,6 +21,15 @@
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
+  
+    /* Mafioso theme - separate namespace */
+  --game-black: #141414;
+  --game-white: #f3f3f3;
+  --game-yellow: #e9b50b;
+  --game-danger: #ff4444;
+  --game-safe: #8ed500;
+  --game-shadow: 4px 4px 0 #000;
+  --game-border: 3px solid #141414;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
@@ -236,3 +245,4 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
+

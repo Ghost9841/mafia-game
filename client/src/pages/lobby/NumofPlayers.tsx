@@ -33,7 +33,7 @@ export default NumofPlayers;
 
 export const PlayerSlots = ({ players = [] }: { players: Player[] }) => {
   return (
-    <div className="space-y-2 max-h-[400px] overflow-y-auto pr-1">
+    <div className="space-y-2 max-h-[800px] overflow-y-auto pr-1">
       {players.map((player) => (
         <div
           key={player.socketId}

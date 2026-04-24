@@ -34,7 +34,7 @@ export const Home = () => {
         {/* LEFT SIDE */}
         <div className="flex-1 flex flex-col p-8">
           {/* Avatar Section */}
-          <div className="flex items-center gap-8 p-6 bg-gray-50 rounded-lg mb-8">
+          <div className="brutalist-card flex items-center gap-8 p-6 bg-gray-50 rounded-lg mb-8">
             <DropdownMenu open={openDropdown} onOpenChange={(open) => setOpenDropdown(open)}>
               <DropdownMenuTrigger>
                 <div className="relative cursor-pointer">
@@ -76,7 +76,7 @@ export const Home = () => {
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 placeholder="Enter your Name"
-                className="text-2xl"
+                className="text-2xl brutalist-card"
               />
             </div>
           </div>
