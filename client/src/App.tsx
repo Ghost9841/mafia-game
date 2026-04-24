@@ -5,6 +5,7 @@ import { Home } from './pages/landingpage/Home';
 import LobbyPage from './pages/lobby/LobbyPage';
 import { Toaster } from './components/ui/sonner';
 import GamePage from './pages/game/GamePage';
+import NotFound from './NotFound';
 
 export const App=()=>{
   return (
@@ -18,7 +19,7 @@ export const App=()=>{
         <Route path="/lobby" element={<LobbyPage/>} />
         <Route path="/lobby/:id" element={<LobbyPage/>} />
         <Route path="/startgame" element={<GamePage/>} />
-
+      <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
         <Toaster position='top-right' richColors/>
