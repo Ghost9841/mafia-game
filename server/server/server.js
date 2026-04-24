@@ -4,8 +4,12 @@ import {createSocketServer} from "../services/socketServerService.js";
 import cors from "cors";
 
 const app = express();
-app.use(cors())
+app.use(cors());
 
 const server = createServer(app);
+
+app.get('/', (req, res) => {
+  res.send('Welcome to Mafioso Backend!');
+});
 
 createSocketServer(server);

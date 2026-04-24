@@ -90,7 +90,7 @@ export function startPhaseManager(io, roomCode, room) {
                     room.gameData.dayCount++;
                     startNight();
                 }
-            }, 5000);
+            }, 30000);
 
         }, 30000);
     }
