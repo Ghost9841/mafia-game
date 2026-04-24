@@ -1,5 +1,5 @@
 // NightCountdown.tsx
-import React, { useState, useEffect } from 'react'
+import  { useState, useEffect } from 'react'
 
 const NightCountdown = ({ seconds }: { seconds: number }) => {
   const [current, setCurrent] = useState(seconds);

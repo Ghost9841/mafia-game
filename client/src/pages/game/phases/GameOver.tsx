@@ -17,7 +17,7 @@ type GameOverProps = {
 export const GameOver = ({ winner, players }: GameOverProps) => {
     const navigate = useNavigate();
     const { state } = useLocation();
-    const { username, room } = state || {};
+    const { username } = state || {};
 
     const isMafiaWin = winner === "mafia";
 

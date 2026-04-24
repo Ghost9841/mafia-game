@@ -11,7 +11,7 @@ import EveningPhase from "./phases/EveningPhase";
 
 export const GamePage = () => {
   const { state } = useLocation();
-  const { username, room, role, players } = state || {};
+  const { role, players } = state || {};
 
   const [phase, setPhase] = useState("role");
   const [nightResult, setNightResult] = useState(null);    // who died last night
@@ -43,7 +43,7 @@ export const GamePage = () => {
     });
 
     socket.on("night_action", ({ message, targets }) => {
-       console.log("night_action received:", targets); // 👈 add this
+       console.log("night_action received:", targets, message); // 👈 add this
       setNightTargets(targets); // your private action targets
     });
 
