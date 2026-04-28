@@ -29,7 +29,7 @@ export const EveningPhase = ({ eliminated, players }: EveningPhaseProps) => {
     }, []);
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-orange-950">
+        <div className="flex items-center justify-center bg-orange-950">
             <div className="text-center w-full max-w-md px-6">
                 <h1 className="text-3xl font-bold text-white mb-6">🌆 Evening</h1>
 

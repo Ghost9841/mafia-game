@@ -34,7 +34,7 @@ export const DayPhase = ({ nightResult, players }: DayPhaseProps) => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-amber-50">
+        <div className="flex items-center justify-center bg-amber-50">
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-4xl">
                 <h1 className="text-3xl font-bold mb-4 text-center">☀️ Day Phase</h1>
 
@@ -84,13 +84,6 @@ export const DayPhase = ({ nightResult, players }: DayPhaseProps) => {
                             </div>
                         </div>
                     ))}
-                </div>
-
-                {/* Discussion area */}
-                <div className="border border-gray-200 rounded-lg p-4 h-48 overflow-y-auto bg-gray-50">
-                    <p className="text-gray-400 text-center mt-16">
-                        💬 Discuss in the chat who you think is Mafia...
-                    </p>
                 </div>
             </div>
         </div>

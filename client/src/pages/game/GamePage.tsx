@@ -11,6 +11,7 @@ import EveningPhase from "./phases/EveningPhase";
 import LeftSidebarPlayerComp from "./components/LeftBarPlayerComp";
 import GameHeader from "./components/GameHeaderComp";
 import GameLogComp from "./components/GameLogComp";
+import PPMChatComp from "./components/PPMChatComp";
 
 export const GamePage = () => {
   const { state } = useLocation();
@@ -81,47 +82,50 @@ export const GamePage = () => {
         />
       ) : (
         <>
-          <GameHeader
-            room={room}
-            day={1}
-            timer={100}
-            roomCode={room?.roomCode}
-          />
-          <div className="min-h-screen bg-[#080808] overflow-hidden flex gap-4">
+          <div className="min-h-screen bg-[#080808] overflow-hidden flex flex-col">
+            <GameHeader
+              room={room}
+              day={1}
+              timer={100}
+              roomCode={room?.roomCode}
+            />
 
-            {/* Grid Background */}
-            <div
-              className="fixed inset-0 pointer-events-none z-0"
-              style={{
-                backgroundImage: `
+            <div className="flex-1 overflow-hidden flex gap-4 min-h-0">
+              {/* Grid Background */}
+              <div
+                className="fixed inset-0 pointer-events-none z-0"
+                style={{
+                  backgroundImage: `
             linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
             linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
           `,
-                backgroundSize: '60px 60px'
-              }}
-            />
-            <div className="fixed w-[700px] h-[700px] pointer-events-none z-0 bg-[radial-gradient(circle,rgba(160,0,0,0.2)_0%,transparent_70%)]" />
+                  backgroundSize: '60px 60px'
+                }}
+              />
+              <div className="fixed w-[700px] min-h-[calc(100vh-100px)] pointer-events-none z-0 bg-[radial-gradient(circle,rgba(160,0,0,0.2)_0%,transparent_70%)]" />    {/* LEFT SIDEBAR */}
+              <LeftSidebarPlayerComp
+                players={alivePlayers}
+                currentPlayerName={role?.name || "You"}
+              />
 
+              {/* CENTER CONTENT */}
+              <div className="flex-1 flex items-center justify-center relative z-10 overflow-y-auto">
+                {phase === "night" && <NightPhase targets={nightTargets} role={role} />}
+                {phase === "day" && <DayPhase nightResult={nightResult} players={alivePlayers} />}
+                {phase === "voting" && <VotingPhase targets={voteTargets} />}
+                {phase === "evening" && <EveningPhase eliminated={eliminated} players={alivePlayers} />}
+                {winner && <GameOver winner={winner} players={finalPlayers} />}
+              </div>
 
-
-            {/* LEFT SIDEBAR */}
-            <LeftSidebarPlayerComp
-              players={alivePlayers}
-              currentPlayerName={role?.name || "You"}
-            />
-
-            {/* CENTER CONTENT */}
-            <div className="flex-1 flex items-center justify-center relative z-10">
-              {phase === "night" && <NightPhase targets={nightTargets} role={role} />}
-              {phase === "day" && <DayPhase nightResult={nightResult} players={alivePlayers} />}
-              {phase === "voting" && <VotingPhase targets={voteTargets} />}
-              {phase === "evening" && <EveningPhase eliminated={eliminated} players={alivePlayers} />}
-              {winner && <GameOver winner={winner} players={finalPlayers} />}
-            </div>
-
-            {/* RIGHT SIDEBAR */}
-            <div className="w-120 min-h-screen border-l border-yellow-700 relative z-0">
-              <GameLogComp logs={gameLogs}/>
+              {/* RIGHT SIDEBAR */}
+              <div className="w-120 border-l border-yellow-700 relative z-0 flex flex-col h-full">
+                <div className="flex-1 overflow-y-auto min-h-0">
+                  <GameLogComp logs={gameLogs} />
+                </div>
+                <div className="flex-shrink-0 border-t border-yellow-700">
+                  <PPMChatComp role={"Mafia"} username={room?.players.name} />
+                </div>
+              </div>
             </div>
           </div>
         </>

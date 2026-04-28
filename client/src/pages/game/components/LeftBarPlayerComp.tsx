@@ -18,7 +18,7 @@ export const LeftSidebarPlayerComp = ({
   currentPlayerName,
 }: LeftSidebarPlayerCompProps) => {
   return (
-    <div className="w-14 min-h-screen bg-[#080808] border-r border-yellow-700 flex flex-col items-center py-4 gap-4">
+    <div className="w-14 h-[554px] bg-[#080808] border-r border-yellow-700 flex flex-col items-center py-4 gap-4">
       {/* Player List */}
       {players.map((player) => {
         const isYou = player.name === currentPlayerName;
