@@ -6,8 +6,15 @@ import LobbyPage from './pages/lobby/LobbyPage';
 import { Toaster } from './components/ui/sonner';
 import GamePage from './pages/game/GamePage';
 import NotFound from './NotFound';
+import { useState } from 'react';
+import SplashScreen from './components/ui/manual-ui/SplashScreen';
 
 export const App=()=>{
+   const [showSplash, setShowSplash] = useState(true);
+
+  if (showSplash) {
+    return <SplashScreen onComplete={() => setShowSplash(false)} />;
+  }
   return (
     <>
     <Router>
