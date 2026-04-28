@@ -63,7 +63,7 @@ export const NightPhase = ({ targets, role }: NightPhaseProps) => {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-900">
+        <div className="flex items-center justify-center bg-gray-900">
             <div className="bg-gray-800 p-8 rounded-lg w-full max-w-md">
                 <h1 className="text-3xl font-bold mb-2 text-white text-center">🌙 Night Phase</h1>
                 <p className="text-gray-400 text-center mb-6">{getMessage()}</p>
