@@ -1,6 +1,6 @@
 // EveningPhase.tsx
 import { useEffect, useState } from "react";
-import NightCountdown from "./NightCountdownComp";
+import NightCountdown from "../components/NightCountdownComp";
 
 type EliminatedPlayer = {
     name: string;
