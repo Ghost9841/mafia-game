@@ -22,7 +22,6 @@ import agentSelect from "@/assets/music/agentSelect.wav";
 export const Home = () => {
   const {play: playSound} = useSound(agentSelect);
 
-
    const [userName, setUserName] = useState(() => 
     localStorage.getItem("mafioso_username") || ""
   );
@@ -47,6 +46,24 @@ export const Home = () => {
     localStorage.setItem("mafioso_avatar", avatarUrl);
   }, [avatarUrl,playSound]);
   return (
+    <>
+    <div className="min-h-screen bg-[#080808] relative overflow-hidden flex-col gap-4">
+      
+      {/* Grid Background */}
+      <div
+        className="fixed inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px'
+        }}
+      />
+
+      {/* Glow */}
+      <div className="fixed -bottom-50 -left-25 w-175 h-175 pointer-events-none z-0 bg-[radial-gradient(circle,rgba(160,0,0,0.2)_0%,transparent_70%)]" />
+
     <div className="mx-8">
       <h1 className="text-4xl font-bold mb-8 text-center">Mafia Game!</h1>
       <div className="flex w-full min-h-screen">
@@ -59,7 +76,6 @@ export const Home = () => {
                 <div className="relative cursor-pointer">
                    <Tooltip>
                     <TooltipTrigger>
-
                   <Avatar className="size-24">
                     <AvatarImage src={avatarUrl} />
                     <AvatarFallback>CN</AvatarFallback>
@@ -71,7 +87,6 @@ export const Home = () => {
                   </Tooltip>
 
                   {/* Replace Button with div */}
-
                   <div className="absolute -bottom-1 -right-1 w-9 h-9 bg-black rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all ring-2 ring-gray-200 cursor-pointer">
                   <Tooltip>
                     <TooltipTrigger>
@@ -121,9 +136,8 @@ export const Home = () => {
           avatarUrl={avatarUrl}
            />
         </div>
-
         {/* RIGHT SIDE - fixed width, vertical layout */}
-        <div className="w-80 bg-gray-50 p-8">
+        <div className="w-80 bg-gray-50 rounded-lg p-8">
           <JoinGameButton
             username={userName}
             avatarUrl={avatarUrl}
@@ -132,6 +146,8 @@ export const Home = () => {
         </div>
       </div>
     </div>
+    </div>
+    </>
   );
 };
 

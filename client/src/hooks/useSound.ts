@@ -1,7 +1,8 @@
-import { useRef, useCallback } from "react"
+import { useRef, useCallback, useState } from "react"
 
-export default function useSound(src: string) {
-  const audioRef = useRef<HTMLAudioElement | null>(null)
+export default function useSound(src?: string) {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isMuted, setIsMuted] = useState(false);
 
   const play = useCallback(() => {
     // lazily create audio instance only when first used
@@ -21,7 +22,12 @@ export default function useSound(src: string) {
     }
   }, [])
 
-  return { play, stop }
+    const toggleMute = useCallback(() => {
+    setIsMuted(prev => {
+      if (!prev) stop(); // if muting, stop current sound
+      return !prev;
+    });
+  }, [stop])
+
+  return { play, stop, toggleMute, isMuted };
 }
-
-

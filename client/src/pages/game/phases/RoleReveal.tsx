@@ -30,6 +30,24 @@ export const RoleReveal = ({ role, onComplete }: { role: string; onComplete: () 
     setTimeout(() => onComplete(), 3000); // Short delay to allow user to see the revealed role 
   };
   return (
+    <>
+        <div className="min-h-screen bg-[#080808] relative overflow-hidden flex-col gap-4">
+      
+      {/* Grid Background */}
+      <div
+        className="fixed inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px'
+        }}
+      />
+
+      {/* Glow */}
+      <div className="fixed -bottom-50 -left-25 w-175 h-175 pointer-events-none z-0 bg-[radial-gradient(circle,rgba(160,0,0,0.2)_0%,transparent_70%)]" />
+
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
       
       <div className="text-center">
@@ -46,6 +64,8 @@ export const RoleReveal = ({ role, onComplete }: { role: string; onComplete: () 
 
       </div>
     </div>
+    </div>
+    </>
   );
 };
 

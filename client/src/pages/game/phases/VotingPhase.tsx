@@ -14,8 +14,6 @@ type VotingPhaseProps = {
 }
 
 export const VotingPhase = ({ targets, roomCode }: VotingPhaseProps) => {
-
-
     const [selected, setSelected] = useState<string | null>(null);
     const [submitted, setSubmitted] = useState(false);
 
@@ -29,50 +27,138 @@ export const VotingPhase = ({ targets, roomCode }: VotingPhaseProps) => {
     };
 
     return (
-        <div className="flex items-center justify-center bg-gray-100">
-            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-                <h1 className="text-3xl font-bold mb-2 text-center">🗳️ Voting Phase</h1>
-                <p className="text-gray-500 text-center mb-6">
-                    Who do you think is Mafia? Vote to eliminate.
-                </p>
+        <div className="flex flex-col items-center w-full h-full px-4 py-6">
 
-                {!submitted ? (
-                    <>
-                        <div className="space-y-2 mb-6">
-                            {targets.map(target => (
+            {/* Header */}
+            <h2
+                className="text-lg font-bold tracking-[4px] mb-2"
+                style={{ color: "#c9a84c" }}
+            >
+                VOTE
+            </h2>
+            <p
+                className="text-xs tracking-widest uppercase mb-6"
+                style={{ color: "rgba(255,255,255,0.25)" }}
+            >
+                Who is the Mafia?
+            </p>
+
+            {!submitted ? (
+                <>
+                    {/* Card Grid */}
+                    <div className="grid grid-cols-3 gap-4 mb-6 w-full max-w-lg">
+                        {targets.map((target) => {
+                            const isSelected = selected === target.socketId;
+                            return (
                                 <div
                                     key={target.socketId}
                                     onClick={() => setSelected(target.socketId)}
-                                    className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all border-2
-                                        ${selected === target.socketId
-                                            ? "border-red-500 bg-red-50"
-                                            : "border-gray-200 hover:border-gray-300"
-                                        }`}
+                                    className="relative cursor-pointer rounded-xl overflow-hidden transition-all duration-200"
+                                    style={{
+                                        height: "160px",
+                                        border: isSelected
+                                            ? "2px solid #dc2626"
+                                            : "2px solid rgba(180,30,30,0.4)",
+                                        boxShadow: isSelected
+                                            ? "0 0 20px rgba(220,38,38,0.5), inset 0 0 20px rgba(220,38,38,0.1)"
+                                            : "0 0 10px rgba(180,30,30,0.2)",
+                                        background: isSelected
+                                            ? "rgba(127,29,29,0.3)"
+                                            : "rgba(20,0,0,0.6)",
+                                        transform: isSelected ? "scale(1.04)" : "scale(1)",
+                                    }}
                                 >
-                                    <img src={target.avatar} className="w-10 h-10 rounded-full" />
-                                    <span className="font-medium">{target.name}</span>
-                                    {selected === target.socketId && (
-                                        <span className="ml-auto text-red-500">☠️ Selected</span>
+                                    {/* Avatar as background */}
+                                    <img
+                                        src={target.avatar}
+                                        alt={target.name}
+                                        className="absolute inset-0 w-full h-full object-cover opacity-80"
+                                        style={{
+                                            filter: isSelected
+                                                ? "brightness(1.0) saturate(1.3)"
+                                                : "brightness(0.7) saturate(1.1)",
+                                        }}
+                                    />
+
+                                    {/* Gradient overlay */}
+                                    <div
+                                        className="absolute inset-0"
+                                        style={{
+                                            background: "linear-gradient(to top, rgba(0,0,0,0.85) 30%, transparent 70%)",
+                                        }}
+                                    />
+
+                                    {/* Selected red overlay */}
+                                    {isSelected && (
+                                        <div
+                                            className="absolute inset-0"
+                                            style={{ background: "rgba(220,38,38,0.12)" }}
+                                        />
+                                    )}
+
+                                    {/* Name */}
+                                    <div className="absolute bottom-0 left-0 right-0 p-2 text-center">
+                                        <p
+                                            className="text-sm font-bold truncate"
+                                            style={{
+                                                color: isSelected ? "#fca5a5" : "#e9b50b",
+                                                textShadow: "0 1px 4px rgba(0,0,0,0.8)",
+                                            }}
+                                        >
+                                            {target.name}
+                                        </p>
+                                    </div>
+
+                                    {/* Selected skull */}
+                                    {isSelected && (
+                                        <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-red-600 flex items-center justify-center">
+                                            <span className="text-white text-xs">☠</span>
+                                        </div>
                                     )}
                                 </div>
-                            ))}
-                        </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Confirm button */}
+                    <div className="w-full max-w-lg">
                         <button
                             onClick={handleVote}
                             disabled={!selected}
-                            className="w-full py-3 bg-red-600 text-white font-bold rounded-lg disabled:opacity-50 hover:bg-red-700"
+                            className="w-full py-3 rounded-xl font-bold tracking-widest uppercase text-sm transition-all"
+                            style={{
+                                background: selected
+                                    ? "linear-gradient(135deg, #7f1d1d, #991b1b)"
+                                    : "rgba(255,255,255,0.05)",
+                                color: selected ? "white" : "rgba(255,255,255,0.2)",
+                                border: selected
+                                    ? "1px solid rgba(239,68,68,0.5)"
+                                    : "1px solid rgba(255,255,255,0.08)",
+                                boxShadow: selected ? "0 0 20px rgba(185,28,28,0.3)" : "none",
+                                cursor: selected ? "pointer" : "not-allowed",
+                            }}
                         >
                             Confirm Vote
                         </button>
-                    </>
-                ) : (
-                    <div className="text-center py-8">
-                        <p className="text-2xl mb-2">✅</p>
-                        <p className="font-medium text-gray-700">Vote submitted!</p>
-                        <p className="text-gray-400 text-sm mt-2">Waiting for others to vote...</p>
                     </div>
-                )}
-            </div>
+                </>
+            ) : (
+                <div className="flex flex-col items-center gap-4 text-center">
+                    <div
+                        className="p-6 rounded-xl"
+                        style={{
+                            border: "1px solid rgba(233,181,11,0.2)",
+                            background: "rgba(255,255,255,0.02)",
+                        }}
+                    >
+                        <p className="text-2xl mb-2">✅</p>
+                        <p className="text-white font-medium">Vote submitted!</p>
+                        <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "13px" }}>
+                            Waiting for others to vote...
+                        </p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

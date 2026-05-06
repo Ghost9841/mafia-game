@@ -109,7 +109,7 @@ export const GamePage = () => {
                   backgroundSize: '60px 60px'
                 }}
               />
-              <div className="fixed w-[700px] min-h-[calc(100vh-100px)] pointer-events-none z-0 bg-[radial-gradient(circle,rgba(160,0,0,0.2)_0%,transparent_70%)]" />    {/* LEFT SIDEBAR */}
+              <div className="fixed w-175 min-h-[calc(100vh-100px)] pointer-events-none z-0 bg-[radial-gradient(circle,rgba(160,0,0,0.2)_0%,transparent_70%)]" />    {/* LEFT SIDEBAR */}
               <LeftSidebarPlayerComp
                 players={alivePlayers}
                 currentPlayerName={role?.name || "You"}
@@ -129,7 +129,7 @@ export const GamePage = () => {
                 <div className="flex-1 overflow-y-auto min-h-0">
                   <GameLogComp logs={gameLogs} />
                 </div>
-                <div className="flex-shrink-0 border-t border-yellow-700">
+                <div className="shrink-0 border-t border-yellow-700">
                   <PPMChatComp role={"Mafia"} username={username} />
                 </div>
               </div>

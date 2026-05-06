@@ -18,6 +18,7 @@ export const App=()=>{
   }
   return (
     <>
+
     <TooltipProvider>
 
     <Router>
@@ -34,6 +35,7 @@ export const App=()=>{
     </Router>
         <Toaster position='top-right' richColors/>
     </TooltipProvider>
+
     </>
   )
 }

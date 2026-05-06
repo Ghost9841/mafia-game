@@ -7,15 +7,18 @@ import CountDownComponent from "./CountDownComponent";
 import { socket } from "@/services/server";
 
 
-import { ArrowLeft, Music } from "lucide-react";
+import { ArrowLeft, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
-import {  useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import useSound  from "@/hooks/useSound";
+
+
 
 export const LobbyPage = () => {
   const location = useLocation();
@@ -27,6 +30,7 @@ export const LobbyPage = () => {
   const isHost = room.host === socket.id;
   const [countdown, setCountdown] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const {  toggleMute, isMuted } = useSound();
 
   const handleCopyCodeToClipBoard = () => {
     navigator.clipboard.writeText(code);
@@ -37,29 +41,29 @@ export const LobbyPage = () => {
     socket.emit("start_game", { roomCode: room.roomCode });
 
   };
-  
+
   const handlePresentChange = (preset: string) => {
-    socket.emit("select_preset", { 
-      roomCode: room.roomCode, 
+    socket.emit("select_preset", {
+      roomCode: room.roomCode,
       selectedPresets: preset
-     });
+    });
   }
-  
+
   useEffect(() => {
     socket.on("room_updated", (updatedRoom) => {
       setPlayers(updatedRoom.players);
     });
-    
+
     socket.on("countdown", ({ countdown }) => {
       setIsVisible(true);
       setCountdown(countdown);
     });
-    
+
     socket.on("game_started", ({ role, players }) => {
-        setCountdown(0); // hide countdown
-        navigate("/startgame", {
-          state: { username, roomCode: room.roomCode, role, players }
-        }); // or trigger game screen
+      setCountdown(0); // hide countdown
+      navigate("/startgame", {
+        state: { username, roomCode: room.roomCode, role, players }
+      }); // or trigger game screen
     });
     return () => {
       socket.off("countdown");
@@ -69,6 +73,24 @@ export const LobbyPage = () => {
   }, []);
 
   return (
+    <>
+       <div className="min-h-screen bg-[#080808] relative overflow-hidden text-white flex-col gap-4">
+      
+      {/* Grid Background */}
+      <div
+        className="fixed inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px'
+        }}
+      />
+
+      {/* Glow */}
+      <div className="fixed -bottom-50 -left-25 w-175 h-175 pointer-events-none z-0 bg-[radial-gradient(circle,rgba(160,0,0,0.2)_0%,transparent_70%)]" />
+
     <div className="flex-1 relative flex overflow-hidden min-h-screen">
       <div className="max-w-7xl mx-auto w-full p-4">
         {/* MAIN BOX */}
@@ -97,8 +119,11 @@ export const LobbyPage = () => {
                   <InputOTPSlot index={7} />
                 </InputOTPGroup>
               </InputOTP>
-              <Button variant="outline" className="mr-2">
-                <Music className="w-4 h-4 mr-1" />
+              <Button onClick={toggleMute} className="mr-2 text-black" variant={"outline"}>
+                {isMuted
+                  ? <VolumeX className="w-4 h-4" />
+                  : <Volume2 className="w-4 h-4" />
+                }
               </Button>
             </div>
           </div>
@@ -111,9 +136,9 @@ export const LobbyPage = () => {
 
             {/* Box 2 */}
             <div className="flex-1 border border-gray-200 rounded-lg p-4">
-              <PresetCustomSettings 
-              isHost={isHost}
-              onPresetChange={handlePresentChange} />
+              <PresetCustomSettings
+                isHost={isHost}
+                onPresetChange={handlePresentChange} />
             </div>
 
             {/* Box 3 */}
@@ -122,14 +147,14 @@ export const LobbyPage = () => {
             </div>
           </div>
           {isHost ? (
-            <Button 
+            <Button
             onClick={slashStartGame}
             className="text-center mt-6">
               Start Game
-              </Button>
-          ): (
+            </Button>
+          ) : (
             <div className="text-center mt-6 text-gray-500">
-             <span className="inline-block animate-spin">⟳</span> Waiting for host to start the game...
+              <span className="inline-block animate-spin">⟳</span> Waiting for host to start the game...
             </div>
           )}
           {isVisible && (
@@ -138,6 +163,8 @@ export const LobbyPage = () => {
         </div>
       </div>
     </div>
+    </div>
+            </>
   );
 }
 export default LobbyPage;

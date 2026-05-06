@@ -14,9 +14,9 @@ export const NumofPlayers = ({ players = [] }: { players: Player[] }) => {
     <div>
       {/* Header */}
       <div className="flex items-center gap-2 mb-3 justify-center">
-        <Users className="w-4 h-4 text-black" />
-        <h3 className="text-sm font-bold text-black">Players</h3>
-        <span className="text-xs text-black">({players.length}/25)</span>
+        <Users className="w-4 h-4 text-white" />
+        <h3 className="text-sm font-bold text-white">Players</h3>
+        <span className="text-xs text-white">({players.length}/25)</span>
       </div>
 
       {/* Player List */}

@@ -82,14 +82,14 @@ export const ChatBox = ({ username }: { username: string }) => {
                 {msg.map((msg) => (
                     <div key={msg.id} className="text-sm">
                         {msg.username === "System" ? (
-                            <div className="text-center text-gray-400 italic">
+                            <div className="text-center text-white italic">
                                 {msg.text}
                             </div>
                         ) : (
                             <>
-                                <span className="font-semibold text-gray-700">{msg.username}:</span>{' '}
-                                <span className="text-gray-600">{msg.text}</span>
-                                <span className="text-xs text-gray-400 ml-2">
+                                <span className="font-semibold text-white">{msg.username}:</span>{' '}
+                                <span className="text-gray-300">{msg.text}</span>
+                                <span className="text-xs text-gray-500 ml-2">
                                     {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
                             </>
