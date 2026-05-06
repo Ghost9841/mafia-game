@@ -6,8 +6,13 @@ import resolveVoting from "../miscellanous/votingResolver.js";
 export function startPhaseManager(io, roomCode, room) {
 
     function startNight() {
+        console.log("startNight called, dayCount:", room.gameData.dayCount); // 👈
         room.gameData.currentPhase = "night";
-        io.to(roomCode).emit("phase_change", { phase: "night" });
+        io.to(roomCode).emit("phase_change", {
+            phase: "night",
+            phaseTimer: 30,
+            dayCount: room.gameData.dayCount
+        });
 
         room.players.filter(p => p.alive).forEach(player => {
             if (mafiaRoles.includes(player.role)) {
@@ -42,7 +47,8 @@ export function startPhaseManager(io, roomCode, room) {
 
     function startDay(nightResult) {
         room.gameData.currentPhase = "day";
-        io.to(roomCode).emit("phase_change", { phase: "day", nightResult });
+        io.to(roomCode).emit("phase_change", { 
+            phase: "day", nightResult, phaseTimer: 60, dayCount: room.gameData.dayCount });
 
         setTimeout(() => {
             startVoting();
@@ -53,17 +59,19 @@ export function startPhaseManager(io, roomCode, room) {
         room.gameData.currentPhase = "voting";
         io.to(roomCode).emit("phase_change", {
             phase: "voting",
+            dayCount: room.gameData.dayCount,
+            phaseTimer: 30, 
             targets: room.players
                 .filter(p => p.alive)
-                .map(p => ({ socketId: p.socketId, name: p.name, avatar: p.avatar }))
+                .map(p => ({ socketId: p.socketId, name: p.name, avatar: p.avatar })),
         });
 
         setTimeout(() => {
             const eliminated = resolveVoting(room); // returns eliminated player or null
-            
+
             // show evening phase with results
             room.gameData.currentPhase = "evening";
-            io.to(roomCode).emit("phase_change", { phase: "evening", eliminated });
+            io.to(roomCode).emit("phase_change", { phase: "evening", eliminated, phaseTimer: 30, dayCount: room.gameData.dayCount });
 
             // after 5 seconds check win and continue
             setTimeout(() => {

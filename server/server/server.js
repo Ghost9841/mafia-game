@@ -2,6 +2,7 @@ import express from 'express';
 import { createServer } from 'node:http';
 import {createSocketServer} from "../services/socketServerService.js";
 import cors from "cors";
+import { log } from 'node:console';
 
 const app = express();
 app.use(cors());

@@ -33,6 +33,7 @@ export const joinRoom = (socket, io) => {
           detectiveTarget: null
         },
         currentPhase: null,
+        phaseTimer: null,
         dayCount: 1,
         revealRoleOnDeath: false,
         votes:[],

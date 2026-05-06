@@ -31,6 +31,8 @@ export function startGame(socket, io) {
                 };
                 // give frontend time to mount GamePage
                 setTimeout(() => {
+                    console.log("Starting phase manager for room:", roomCode); // 👈
+                    console.log("Room players:", room?.players?.map(p => p.name)); // 👈
                     startPhaseManager(io, roomCode, room);
                 }, 3000);
             };
