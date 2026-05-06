@@ -51,7 +51,6 @@ export const LobbyPage = () => {
     });
     
     socket.on("countdown", ({ countdown }) => {
-      console.log("Countdown started: ", countdown);
       setIsVisible(true);
       setCountdown(countdown);
     });
@@ -59,7 +58,7 @@ export const LobbyPage = () => {
     socket.on("game_started", ({ role, players }) => {
         setCountdown(0); // hide countdown
         navigate("/startgame", {
-          state: { username, room, role, players }
+          state: { username, roomCode: room.roomCode, role, players }
         }); // or trigger game screen
     });
     return () => {

@@ -1,7 +1,6 @@
 // VotingPhase.tsx
 import { useState } from "react";
 import { socket } from "@/services/server";
-import { useLocation } from "react-router-dom";
 
 type Target = {
     socketId: string;
@@ -11,11 +10,11 @@ type Target = {
 
 type VotingPhaseProps = {
     targets: Target[];
+    roomCode: string;
 }
 
-export const VotingPhase = ({ targets }: VotingPhaseProps) => {
-    const { state } = useLocation();
-    const { room } = state || {};
+export const VotingPhase = ({ targets, roomCode }: VotingPhaseProps) => {
+
 
     const [selected, setSelected] = useState<string | null>(null);
     const [submitted, setSubmitted] = useState(false);
@@ -23,7 +22,7 @@ export const VotingPhase = ({ targets }: VotingPhaseProps) => {
     const handleVote = () => {
         if (!selected) return;
         socket.emit("submit_vote", {
-            roomCode: room.roomCode,
+            roomCode: roomCode,
             targetId: selected
         });
         setSubmitted(true);

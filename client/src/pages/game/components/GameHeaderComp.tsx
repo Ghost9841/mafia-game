@@ -7,24 +7,39 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
+import { useEffect, useState } from "react";
 
 type GameHeaderProps = {
   day: number;
   timer: number;
-  room?: any;
+  playerCount?: number;
   roomCode?: string;
 };
 
 export const GameHeader = ({
   day,
   timer,
-  room,
+  playerCount,
   roomCode,
 }: GameHeaderProps) => {
   const handleCopyCodeToClipBoard = () => {
     navigator.clipboard.writeText(roomCode || "");
     toast.success("Room code copied to clipboard!");
   };
+  // GameHeader component
+const [displayTimer, setDisplayTimer] = useState(timer);
+
+useEffect(() => {
+    setDisplayTimer(timer); // reset when new phase starts
+}, [timer]);
+
+useEffect(() => {
+    if (displayTimer <= 0) return;
+    const interval = setInterval(() => {
+        setDisplayTimer(prev => prev - 1);
+    }, 1000);
+    return () => clearInterval(interval);
+}, [displayTimer]);
   return (
     <div className="w-full h-12 border-b border-yellow-700 bg-black flex items-center justify-between px-8 relative">
 
@@ -37,7 +52,7 @@ export const GameHeader = ({
           DAY: {day}
         </h1>
         <p className="text-yellow-400 text-sm">
-          TIME: {timer}s
+          TIME: {displayTimer}s
         </p>
       </div>
 
@@ -61,7 +76,7 @@ export const GameHeader = ({
           </Button>
           <Button className="flex items-center justify-center border border-yellow-700 rounded-lg px-2 py-1 text-sm text-yellow-400">
             <User className="w-4 h-4 mr-1 text-white" />
-            {room?.players?.length || 0} / 25
+            {playerCount || 0} / 25
           </Button>
         </div>
       </div>

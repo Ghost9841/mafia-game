@@ -1,7 +1,6 @@
 // NightPhase.tsx
 import { useState, useEffect } from "react";
 import { socket } from "@/services/server";
-import { useLocation } from "react-router-dom";
 
 type Target = {
     socketId: string;
@@ -17,11 +16,10 @@ type DetectiveResult = {
 type NightPhaseProps = {
     targets: Target[];
     role: string;
+    roomCode: string;
 }
 
-export const NightPhase = ({ targets, role }: NightPhaseProps) => {
-    const { state } = useLocation();
-    const { room } = state || {};
+export const NightPhase = ({ targets, role, roomCode }: NightPhaseProps) => {
 
     const [selected, setSelected] = useState<string | null>(null);
     const [submitted, setSubmitted] = useState(false);
@@ -45,7 +43,7 @@ export const NightPhase = ({ targets, role }: NightPhaseProps) => {
     const handleSubmit = () => {
         if (!selected) return;
         socket.emit("night_action", {
-            roomCode: room.roomCode,
+            roomCode: roomCode,
             targetId: selected
         });
         setSubmitted(true);

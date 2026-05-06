@@ -5,6 +5,10 @@ const NightCountdown = ({ seconds }: { seconds: number }) => {
   const [current, setCurrent] = useState(seconds);
 
   useEffect(() => {
+    setCurrent(seconds); // reset when prop changes
+  }, [seconds]);
+
+  useEffect(() => {
     if (current <= 0) return;
     const timer = setTimeout(() => setCurrent(prev => prev - 1), 1000);
     return () => clearTimeout(timer);
@@ -16,7 +20,7 @@ const NightCountdown = ({ seconds }: { seconds: number }) => {
       <p className="text-8xl font-bold">{current}</p>
       <p className="text-gray-500 text-sm">Prepare yourself...</p>
     </div>
-  )
+  );
 }
 
 export default NightCountdown;

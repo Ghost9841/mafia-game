@@ -94,12 +94,6 @@ export const PPMChatComp = ({ username, role }: PPMChatProps) => {
   return (
     <div className="w-full h-[300px] min-h-0 bg-[#1a0000] border border-yellow-700 flex flex-col overflow-hidden">
       
-      {/* Header */}
-      <div className="border-b border-yellow-700 px-4 py-3 text-center">
-        <h2 className="text-yellow-500 font-bold tracking-widest uppercase text-sm">
-          Communications
-        </h2>
-      </div>
 
       {/* Tabs */}
       <div className="flex border-b border-yellow-900">

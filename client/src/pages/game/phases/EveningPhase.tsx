@@ -24,9 +24,9 @@ export const EveningPhase = ({ eliminated, players }: EveningPhaseProps) => {
 
     useEffect(() => {
         // show countdown in last 5 seconds
-        const timer = setTimeout(() => setShowCountdown(true), 5000);
-        return () => clearTimeout(timer);
-    }, []);
+    const timer = setTimeout(() => setShowCountdown(true), 20000);
+    return () => clearTimeout(timer);
+}, []);
 
     return (
         <div className="flex items-center justify-center bg-orange-950">
@@ -80,7 +80,7 @@ export const EveningPhase = ({ eliminated, players }: EveningPhaseProps) => {
                 </div>
             </div>
 
-            {showCountdown && <NightCountdown seconds={5} />}
+            {showCountdown && <NightCountdown seconds={10} />}
         </div>
     );
 };

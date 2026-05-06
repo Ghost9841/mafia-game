@@ -15,7 +15,7 @@ import PPMChatComp from "./components/PPMChatComp";
 
 export const GamePage = () => {
   const { state } = useLocation();
-  const { role, players, room } = state || {};
+  const { role, players, roomCode, username  } = state || {};
 
   const [phase, setPhase] = useState("role");
   const [nightResult, setNightResult] = useState(null);    // who died last night
@@ -26,9 +26,16 @@ export const GamePage = () => {
   const [finalPlayers, setFinalPlayers] = useState([]); // 👈 new state for game over
   const [eliminated, setEliminated] = useState(null);
   const [gameLogs, setGameLogs] = useState<any[]>([]); // track game events
+  const [timer, setTimer] = useState(0);
+  const [dayCount, setDayCount] = useState(1);
+
   useEffect(() => {
-    socket.on("phase_change", ({ phase, nightResult, targets, eliminated }) => {
+    socket.on("phase_change", ({ phase, nightResult, targets, eliminated, phaseTimer, dayCount }) => {
+      console.log("Phase change received:", phase, nightResult, targets, eliminated, phaseTimer, dayCount); // 👈 add this
+      if (phase === "night") setNightTargets([]);
       setPhase(phase);
+      if (dayCount !== undefined) setDayCount(dayCount); // 👈 guard
+      if (phaseTimer !== undefined) setTimer(phaseTimer); // 👈 guard
       if (eliminated) setEliminated(eliminated);
       if (nightResult) {
         setNightResult(nightResult);
@@ -83,11 +90,11 @@ export const GamePage = () => {
       ) : (
         <>
           <div className="min-h-screen bg-[#080808] overflow-hidden flex flex-col">
-            <GameHeader
-              room={room}
-              day={1}
-              timer={100}
-              roomCode={room?.roomCode}
+            <GameHeader              
+              day={dayCount}
+              timer={timer}
+              roomCode={roomCode}
+              playerCount={players?.length}
             />
 
             <div className="flex-1 overflow-hidden flex gap-4 min-h-0">
@@ -110,9 +117,9 @@ export const GamePage = () => {
 
               {/* CENTER CONTENT */}
               <div className="flex-1 flex items-center justify-center relative z-10 overflow-y-auto">
-                {phase === "night" && <NightPhase targets={nightTargets} role={role} />}
+                {phase === "night" && <NightPhase targets={nightTargets} role={role} roomCode={roomCode} />}
                 {phase === "day" && <DayPhase nightResult={nightResult} players={alivePlayers} />}
-                {phase === "voting" && <VotingPhase targets={voteTargets} />}
+                {phase === "voting" && <VotingPhase targets={voteTargets} roomCode={roomCode} />}
                 {phase === "evening" && <EveningPhase eliminated={eliminated} players={alivePlayers} />}
                 {winner && <GameOver winner={winner} players={finalPlayers} />}
               </div>
@@ -123,7 +130,7 @@ export const GamePage = () => {
                   <GameLogComp logs={gameLogs} />
                 </div>
                 <div className="flex-shrink-0 border-t border-yellow-700">
-                  <PPMChatComp role={"Mafia"} username={room?.players.name} />
+                  <PPMChatComp role={"Mafia"} username={username} />
                 </div>
               </div>
             </div>
