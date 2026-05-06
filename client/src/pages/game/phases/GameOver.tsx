@@ -8,11 +8,14 @@ type Player = {
     avatar: string;
     alive: boolean;
     role: string;
+    
 }
 
 type GameOverProps = {
     winner: string;
     players: Player[];
+    roomCode: string; 
+    username: string;
 }
 
 export const GameOver = ({ winner, players }: GameOverProps) => {
@@ -22,11 +25,13 @@ export const GameOver = ({ winner, players }: GameOverProps) => {
 
     const isMafiaWin = winner === "mafia";
 
-    useEffect(() => {
+   useEffect(() => {
         socket.on("room_updated", (updatedRoom) => {
-            navigate("/lobby", {
-                state: { username, room: updatedRoom }
-            });
+            setTimeout(() => {
+                navigate("/lobby", {
+                    state: { username, room: updatedRoom }
+                });
+            }, 5000);
         });
         return () => { socket.off("room_updated"); };
     }, []);

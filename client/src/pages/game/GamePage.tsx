@@ -121,8 +121,7 @@ export const GamePage = () => {
                 {phase === "day" && <DayPhase nightResult={nightResult} players={alivePlayers} />}
                 {phase === "voting" && <VotingPhase targets={voteTargets} roomCode={roomCode} />}
                 {phase === "evening" && <EveningPhase eliminated={eliminated} players={alivePlayers} />}
-                {winner && <GameOver winner={winner} players={finalPlayers} />}
-              </div>
+                {winner && <GameOver winner={winner} players={finalPlayers} roomCode={roomCode} username={username} />}              </div>
 
               {/* RIGHT SIDEBAR */}
               <div className="w-120 border-l border-yellow-700 relative z-0 flex flex-col h-full">
