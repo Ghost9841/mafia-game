@@ -47,8 +47,9 @@ export function startPhaseManager(io, roomCode, room) {
 
     function startDay(nightResult) {
         room.gameData.currentPhase = "day";
-        io.to(roomCode).emit("phase_change", { 
-            phase: "day", nightResult, phaseTimer: 60, dayCount: room.gameData.dayCount });
+        io.to(roomCode).emit("phase_change", {
+            phase: "day", nightResult, phaseTimer: 60, dayCount: room.gameData.dayCount
+        });
 
         setTimeout(() => {
             startVoting();
@@ -60,20 +61,38 @@ export function startPhaseManager(io, roomCode, room) {
         io.to(roomCode).emit("phase_change", {
             phase: "voting",
             dayCount: room.gameData.dayCount,
-            phaseTimer: 30, 
+            phaseTimer: 30,
             targets: room.players
                 .filter(p => p.alive)
                 .map(p => ({ socketId: p.socketId, name: p.name, avatar: p.avatar })),
         });
 
-        setTimeout(() => {
-            const eliminated = resolveVoting(room); // returns eliminated player or null
+        let resolved = false; // 👈 prevent double resolution
 
-            // show evening phase with results
+        const resolveEarly = () => {
+            if (resolved) return; // already resolved
+            resolved = true;
+            clearTimeout(votingTimer); // cancel the 30s timer
+            io.removeListener("all_votes_cast_internal", resolveEarly); // cleanup
+            resolveAndMoveOn();
+        };
+
+        // listen for all votes cast
+        // we use a custom internal event via room object
+        room.gameData.onAllVotesCast = resolveEarly; // 👈 store callback on room
+
+        // 30 second fallback timer
+        const votingTimer = setTimeout(() => {
+            resolveEarly();
+        }, 30000);
+
+        function resolveAndMoveOn() {
+            const eliminated = resolveVoting(room);
             room.gameData.currentPhase = "evening";
-            io.to(roomCode).emit("phase_change", { phase: "evening", eliminated, phaseTimer: 30, dayCount: room.gameData.dayCount });
+            io.to(roomCode).emit("phase_change", {
+                phase: "evening", eliminated, phaseTimer: 30, dayCount: room.gameData.dayCount
+            });
 
-            // after 5 seconds check win and continue
             setTimeout(() => {
                 const result = checkWinCondition(room.players);
                 if (result) {
@@ -83,7 +102,6 @@ export function startPhaseManager(io, roomCode, room) {
                             name: p.name, avatar: p.avatar, alive: p.alive, role: p.role
                         }))
                     });
-                    // reset room
                     room.gameState = "lobby";
                     room.gameData = {
                         nightActions: { mafiaTarget: null, doctorSave: null, detectiveTarget: null },
@@ -99,9 +117,7 @@ export function startPhaseManager(io, roomCode, room) {
                     startNight();
                 }
             }, 30000);
-
-        }, 30000);
+        }
     }
-
     startNight();
 }

@@ -36,6 +36,7 @@ export const joinRoom = (socket, io) => {
         phaseTimer: null,
         dayCount: 1,
         revealRoleOnDeath: false,
+        onAllVotesCast : null, // callback to trigger when all votes are in
         votes:[],
       }, 
       createdAt: Date.now()
