@@ -11,12 +11,21 @@ import {
 
 import CreateGameButton from "./CreateGameButton";
 import JoinGameButton from "./JoinGameButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HowToPlay from "./HowToPlay";
+import useSound from "@/hooks/useSound";
+import agentSelect from "@/assets/music/agentSelect.wav";
 
 export const Home = () => {
-  const [userName, setUserName] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState("https://github.com/shadcn.png");
+  const {play: playSound} = useSound(agentSelect);
+
+
+   const [userName, setUserName] = useState(() => 
+    localStorage.getItem("mafioso_username") || ""
+  );
+  const [avatarUrl, setAvatarUrl] = useState(() => 
+    localStorage.getItem("mafioso_avatar") || "https://github.com/shadcn.png"
+  );
   const [openDropdown, setOpenDropdown] = useState(false);
 
   const handleAvatarChange = (e: any) => {
@@ -26,7 +35,14 @@ export const Home = () => {
   const onSaveClick = () => {
     setOpenDropdown(false);
   }
+    useEffect(() => {
+    localStorage.setItem("mafioso_username", userName);
+  }, [userName]);
 
+  useEffect(() => { 
+     playSound();
+    localStorage.setItem("mafioso_avatar", avatarUrl);
+  }, [avatarUrl,playSound]);
   return (
     <div className="mx-8">
       <h1 className="text-4xl font-bold mb-8 text-center">Mafia Game!</h1>

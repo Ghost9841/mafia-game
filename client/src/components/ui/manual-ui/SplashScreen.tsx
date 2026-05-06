@@ -3,6 +3,8 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import logo from "@/assets/loadingscreen/pngwing.com.png";           // 👈 your mask logo
 import reaper from "@/assets/loadingscreen/pngwing.com.png";  // 👈 your grim reaper
+import useSound from "@/hooks/useSound";
+import startupSound from "@/assets/music/intro1.wav";
 
 type SplashScreenProps = {
   onComplete: () => void;
@@ -11,10 +13,24 @@ type SplashScreenProps = {
 export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
   const reaperRef = useRef<HTMLImageElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
+  const shimmerRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { play: playSound, stop: stopSound } = useSound(startupSound);
+  const hasTriggeredSound = useRef(false);
 
   useEffect(() => {
+    const tryPlay = async () => {
+      try {
+        await playSound(); // try auto-play
+        hasTriggeredSound.current = true;
+      } catch {
+        // browser blocked it, wait for click
+      }
+    };
+
+    tryPlay();
+
     const tl = gsap.timeline();
 
     // 1. Reaper walks from left to right, bar fills simultaneously
@@ -23,44 +39,52 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
       { x: "-10vw", opacity: 0 },
       { x: "90vw", opacity: 1, duration: 2.5, ease: "power1.inOut" }
     )
-    .fromTo(
-      barRef.current,
-      { width: "0%" },
-      { width: "100%", duration: 2.5, ease: "power1.inOut" },
-      "<" // start at same time as reaper
-    )
+      .fromTo(
+        [barRef.current, shimmerRef.current],
+        { width: "0%" },
+        { width: "100%", duration: 2.5, ease: "power1.inOut" },
+        "<" // start at same time as reaper
+      )
 
-    // 2. Reaper fades out at the end
-    .to(reaperRef.current, { opacity: 0, duration: 0.3 })
+      // 2. Reaper fades out at the end
+      .to(reaperRef.current, { opacity: 0, duration: 0.3 })
 
-    // 3. Logo fades in
-    .fromTo(
-      logoRef.current,
-      { opacity: 0, scale: 0.8 },
-      { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.7)" }
-    )
+      // 3. Logo fades in
+      .fromTo(
+        logoRef.current,
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.7)" }
+      )
 
-    // 4. Hold for a moment then fade entire screen out
-    .to(containerRef.current, {
-      opacity: 0,
-      duration: 0.6,
-      delay: 0.8,
-      onComplete: () => onComplete()
-    });
+      // 4. Hold for a moment then fade entire screen out
+      .to(containerRef.current, {
+        opacity: 0,
+        duration: 0.6,
+        delay: 0.8,
+        onComplete: () => { onComplete(); stopSound(); }
+      });
 
-    return () => { tl.kill(); };
-  }, []);
+    return () => { tl.kill(); stopSound(); };
+  }, [onComplete, playSound]);
+
+  const handlePointerDown = () => {
+    if (!hasTriggeredSound.current) {
+      playSound();
+      hasTriggeredSound.current = true;
+    }
+  };
 
   return (
     <div
       ref={containerRef}
+      onPointerDown={handlePointerDown}
       className="fixed inset-0 bg-[#080808] z-[9999] flex flex-col items-center justify-center overflow-hidden"
     >
       {/* Background grid */}
       <div
         className="fixed inset-0 pointer-events-none z-0"
         style={{
-         backgroundImage: `
+          backgroundImage: `
             linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
             linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
           `,
@@ -86,7 +110,7 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
           alt="Reaper"
           className="absolute h-32 object-contain"
           style={{
-            bottom:0, // sits just above the bar
+            bottom: 0, // sits just above the bar
             left: 0,
             opacity: 0,
           }}
@@ -102,7 +126,7 @@ export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
           />
           {/* Gold shimmer on bar */}
           <div
-            ref={barRef}
+            ref={shimmerRef}
             className="absolute inset-0 h-full"
             style={{
               background: "linear-gradient(90deg, #8b0000, #c9a84c, #8b0000)",
