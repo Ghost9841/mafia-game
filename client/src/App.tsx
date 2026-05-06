@@ -8,6 +8,7 @@ import GamePage from './pages/game/GamePage';
 import NotFound from './NotFound';
 import { useState } from 'react';
 import SplashScreen from './components/ui/manual-ui/SplashScreen';
+import { TooltipProvider } from './components/ui/tooltip';
 
 export const App=()=>{
    const [showSplash, setShowSplash] = useState(true);
@@ -17,6 +18,8 @@ export const App=()=>{
   }
   return (
     <>
+    <TooltipProvider>
+
     <Router>
       <Routes>
         <Route path="/" element={<Home/>} />
@@ -30,6 +33,7 @@ export const App=()=>{
       </Routes>
     </Router>
         <Toaster position='top-right' richColors/>
+    </TooltipProvider>
     </>
   )
 }

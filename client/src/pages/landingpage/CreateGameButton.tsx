@@ -1,8 +1,11 @@
-import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { socket } from "@/services/server";
+
+import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export const CreateGameButton = ({ username, avatarUrl }: { username: string, avatarUrl: string }) => {
     const [loading, setLoading] = useState(false);
@@ -43,9 +46,16 @@ export const CreateGameButton = ({ username, avatarUrl }: { username: string, av
             </Button>
             <h3 className="text-sm font-bold">Host Your Game</h3>
             <p className="text-sm">Create a new game and invite your friends to play.</p>
+            <Tooltip>
+            <TooltipTrigger>
             <Button variant="outline" size="lg" onClick={createGame}>
                 {loading ? "Creating..." : "Create Game"}
             </Button>
+            </TooltipTrigger>
+            <TooltipContent side={"top"}>
+                <p>Create Game</p>
+            </TooltipContent>
+            </Tooltip>
         </div>
     )
 };

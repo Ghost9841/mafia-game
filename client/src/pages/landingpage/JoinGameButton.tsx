@@ -1,12 +1,16 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { socket } from "@/services/server";
+
 import { Button } from "@/components/ui/button";
 import {
     InputOTP,
     InputOTPGroup,
     InputOTPSlot,
 } from "@/components/ui/input-otp"
-import { socket } from "@/services/server";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+
 
 export const JoinGameButton = ({ username, avatarUrl }: { username: string, avatarUrl: string }) => {
     const [loading, setLoading] = useState(false);
@@ -50,13 +54,20 @@ export const JoinGameButton = ({ username, avatarUrl }: { username: string, avat
                     <InputOTPSlot index={7} />
                 </InputOTPGroup>
             </InputOTP>
-            <Button
-                onClick={joinRoom}
-                variant="outline"
-                size="lg"
-                className="w-full">
-              {loading ? "Joining..." : "Join Game"}
-            </Button>
+                <Tooltip>
+                    <TooltipTrigger className="w-full">
+                        <Button
+                            onClick={joinRoom}
+                            variant="outline"
+                            size="lg"
+                            className="w-full">
+                            {loading ? "Joining..." : "Join Game"}
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side={"top"}>
+                        <p>Join Game</p>
+                    </TooltipContent>
+                </Tooltip>
         </div>
     )
 };

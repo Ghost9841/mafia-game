@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,10 +10,11 @@ import {
   DropdownMenuGroup,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+
 
 import CreateGameButton from "./CreateGameButton";
 import JoinGameButton from "./JoinGameButton";
-import { useEffect, useState } from "react";
 import HowToPlay from "./HowToPlay";
 import useSound from "@/hooks/useSound";
 import agentSelect from "@/assets/music/agentSelect.wav";
@@ -54,14 +57,30 @@ export const Home = () => {
             <DropdownMenu open={openDropdown} onOpenChange={(open) => setOpenDropdown(open)}>
               <DropdownMenuTrigger>
                 <div className="relative cursor-pointer">
+                   <Tooltip>
+                    <TooltipTrigger>
+
                   <Avatar className="size-24">
                     <AvatarImage src={avatarUrl} />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                      <p>{userName}</p>
+                    </TooltipContent>
+                  </Tooltip>
 
                   {/* Replace Button with div */}
+
                   <div className="absolute -bottom-1 -right-1 w-9 h-9 bg-black rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all ring-2 ring-gray-200 cursor-pointer">
+                  <Tooltip>
+                    <TooltipTrigger>
                     <EditIcon className="w-5 h-5 text-white" />
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                      <p>Edit Avatar</p>
+                    </TooltipContent>
+                  </Tooltip>
                   </div>
                 </div>
               </DropdownMenuTrigger>
