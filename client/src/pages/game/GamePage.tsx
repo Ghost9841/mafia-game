@@ -41,6 +41,7 @@ export const GamePage = () => {
         setNightResult(nightResult);
         // update alive players list
         if (nightResult.killedPlayer) {
+          setEliminated(eliminated);
           setAlivePlayers((prev: any[]) =>
             prev.map(p =>
               p.name === nightResult.killedPlayer.name
